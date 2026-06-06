@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Your School - GovSchools Kenya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #006B3F;
+      --primary-light: #129a5f;
+      --secondary: #990000;
+      --dark-bg: #0b0f19;
+      --dark-card: #161c2a;
+      --light-bg: #f8fafc;
+      --light-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --transition: all 0.3s ease;
+      --shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: var(--font-sans);
+      background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 40px 24px;
+    }
+    
+    body.dark {
+      background: linear-gradient(135deg, var(--dark-bg) 0%, #0f1419 100%);
+      color: #f1f5f9;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--light-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    body.dark .card {
+      background: var(--dark-card);
+    }
+
+    .card-header {
+      background: var(--primary);
+      color: white;
+      padding: 32px;
+      text-align: center;
+    }
+    .card-header h1 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+    .card-header p {
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+
+    .card-body {
+      padding: 32px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+    }
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--light-bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      transition: var(--transition);
+    }
+    body.dark .form-control {
+      background: var(--dark-bg);
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0,107,63,0.1);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .info-box {
+      background: rgba(0,107,63,0.08);
+      border-left: 4px solid var(--primary);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      margin-bottom: 24px;
+      font-size: 0.85rem;
+    }
+    body.dark .info-box {
+      background: rgba(18,154,95,0.15);
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toast {
+      background: var(--light-card);
+      border-left: 4px solid var(--primary);
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideInRight 0.3s ease;
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 20px 16px; }
+      .form-row { grid-template-columns: 1fr; }
+      .card-header { padding: 24px; }
+      .card-body { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h1><i class="fa-solid fa-school-circle-check"></i> School Registration</h1>
+      <p>Register your institution for the 2027 Admissions Cycle</p>
+    </div>
+    <div class="card-body">
+      <div class="info-box">
+        <i class="fa-solid fa-info-circle"></i> <strong>Registration Process:</strong>
+        <ol style="margin: 8px 0 0 20px; line-height: 1.6;">
+          <li>Fill in your school details below</li>
+          <li>Submit for Ministry verification</li>
+          <li>Receive approval notification via SMS/Email</li>
+          <li>Login with provided credentials and change your password</li>
+        </ol>
+      </div>
+
+      <form id="schoolRegisterForm">
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-building"></i> School Name *</label>
+          <input type="text" class="form-control" id="schoolName" placeholder="e.g., Kangemi High School" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-barcode"></i> NEMIS Code (if available)</label>
+          <input type="text" class="form-control" id="nemisCode" placeholder="e.g., NSC001">
+          <small style="color: var(--text-muted); font-size: 0.7rem;">Leave blank if not yet assigned</small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-location-dot"></i> County *</label>
+            <select class="form-control" id="county" required>
+              <option value="">Select County</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-tag"></i> Category *</label>
+            <select class="form-control" id="category" required>
+              <option value="National">National School</option>
+              <option value="ExtraCounty">Extra-County School</option>
+              <option value="County">County School</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-graduation-cap"></i> Level *</label>
+            <select class="form-control" id="level" required>
+              <option value="Primary">Primary School</option>
+              <option value="JSS">Junior Secondary (JSS)</option>
+              <option value="Senior">Senior Secondary</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-venus-mars"></i> Gender *</label>
+            <select class="form-control" id="gender" required>
+              <option value="Boys">Boys Only</option>
+              <option value="Girls">Girls Only</option>
+              <option value="Mixed">Mixed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-bed"></i> Boarding Status *</label>
+            <select class="form-control" id="boarding" required>
+              <option value="Boarding">Boarding Only</option>
+              <option value="Day">Day Only</option>
+              <option value="Both">Both Boarding and Day</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-users"></i> Total Capacity</label>
+            <input type="number" class="form-control" id="capacity" placeholder="e.g., 400">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-user-tie"></i> Principal Name *</label>
+            <input type="text" class="form-control" id="principalName" placeholder="Full name of Head Teacher" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-id-card"></i> Principal TSC Number *</label>
+            <input type="text" class="form-control" id="tscNumber" placeholder="e.g., TSC-1234567" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-phone"></i> School Phone *</label>
+            <input type="tel" class="form-control" id="schoolPhone" placeholder="e.g., 0712345678" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-envelope"></i> School Email *</label>
+            <input type="email" class="form-control" id="schoolEmail" placeholder="school@example.com" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-map-pin"></i> Physical Address</label>
+          <input type="text" class="form-control" id="address" placeholder="Town/Area, P.O. Box">
+        </div>
+
+        <div class="info-box" style="margin-top: 20px;">
+          <i class="fa-solid fa-key"></i> <strong>Security Information:</strong><br>
+          Upon approval, you will receive a temporary password via SMS/Email. You will be required to change it on your first login.
+        </div>
+
+        <button type="submit" class="btn-primary">
+          <i class="fa-solid fa-paper-plane"></i> Submit Registration
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 24px;">
+        <a href="access-gateway.html" class="btn-secondary" style="display: inline-flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-arrow-left"></i> Back to Login
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/school-data.js"></script>
+<script>
+// Kenya Counties
+const counties = [
+  "Nairobi", "Kiambu", "Mombasa", "Kisumu", "Nakuru", "Machakos", "Murang'a", "Nyeri",
+  "Kirinyaga", "Nyandarua", "Laikipia", "Meru", "Embu", "Kitui", "Makueni", "Kajiado",
+  "Narok", "Bomet", "Kericho", "Uasin Gishu", "Nandi", "Trans Nzoia", "Bungoma", "Kakamega",
+  "Busia", "Siaya", "Kisii", "Nyamira", "Migori", "Homa Bay", "Kwale", "Kilifi"
+];
+
+function populateCounties() {
+  const select = document.getElementById('county');
+  counties.forEach(county => {
+    const option = document.createElement('option');
+    option.value = county;
+    option.textContent = county;
+    select.appendChild(option);
+  });
+}
+
+function generateTempPassword() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+  let password = '';
+  for (let i = 0; i < 10; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return password;
+}
+
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  const icon = type === 'success' ? 'fa-circle-check' : (type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-info');
+  const color = type === 'success' ? '#10b981' : (type === 'error' ? '#dc2626' : '#3b82f6');
+  toast.style.borderLeftColor = color;
+  toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color};"></i> ${message}`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(100%)';
+    setTimeout(() => toast.remove(), 300);
+  }, 5000);
+}
+
+document.getElementById('schoolRegisterForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  // Get form values
+  const schoolName = document.getElementById('schoolName').value.trim();
+  const nemisCode = document.getElementById('nemisCode').value.trim().toUpperCase() || `SCH-${Math.floor(Math.random() * 10000)}`;
+  const county = document.getElementById('county').value;
+  const category = document.getElementById('category').value;
+  const level = document.getElementById('level').value;
+  const gender = document.getElementById('gender').value;
+  const boarding = document.getElementById('boarding').value;
+  const capacity = parseInt(document.getElementById('capacity').value) || 200;
+  const principalName = document.getElementById('principalName').value.trim();
+  const tscNumber = document.getElementById('tscNumber').value.trim();
+  const schoolPhone = document.getElementById('schoolPhone').value.trim();
+  const schoolEmail = document.getElementById('schoolEmail').value.trim();
+  const address = document.getElementById('address').value.trim();
+  
+  // Validation
+  if (!schoolName || !county || !principalName || !tscNumber || !schoolPhone || !schoolEmail) {
+    showToast('Please fill in all required fields', 'error');
+    return;
+  }
+  
+  if (!/^\d{10,12}$/.test(tscNumber.replace('TSC-', '')) && !tscNumber.startsWith('TSC-')) {
+    showToast('Please enter a valid TSC Number (e.g., TSC-1234567 or 1234567)', 'error');
+    return;
+  }
+  
+  // Generate temporary password
+  const tempPassword = generateTempPassword();
+  
+  // Create school registration object
+  const registration = {
+    id: Date.now(),
+    schoolName: schoolName,
+    nemis: nemisCode,
+    county: county,
+    category: category,
+    level: level,
+    gender: gender,
+    boarding: boarding,
+    capacity: capacity,
+    slots: capacity,
+    remaining: capacity,
+    principalName: principalName,
+    tscNumber: tscNumber.startsWith('TSC-') ? tscNumber : `TSC-${tscNumber}`,
+    phone: schoolPhone,
+    email: schoolEmail,
+    address: address,
+    tempPassword: tempPassword,
+    status: 'pending',
+    registrationDate: new Date().toISOString(),
+    // Additional school fields
+    cutoff: category === 'National' ? 380 : (category === 'ExtraCounty' ? 350 : 320),
+    mean2024: category === 'National' ? 400 : (category === 'ExtraCounty' ? 370 : 340),
+    color: `linear-gradient(135deg,#1a4731,${window.SCHOOL_DATA.getRandomColor()})`,
+    established: new Date().getFullYear(),
+    motto: 'Strive for Excellence'
+  };
+  
+  // Save to pending registrations
+  const pendingRegistrations = JSON.parse(localStorage.getItem('govschools_pending_registrations') || '[]');
+  pendingRegistrations.push(registration);
+  localStorage.setItem('govschools_pending_registrations', JSON.stringify(pendingRegistrations));
+  
+  // Also add to verification queue for ministry
+  const verificationQueue = JSON.parse(localStorage.getItem('govschools_verification_queue') || '[]');
+  verificationQueue.push({
+    id: registration.id,
+    schoolName: schoolName,
+    schoolCode: nemisCode,
+    headteacher: principalName,
+    tscId: registration.tscNumber,
+    email: schoolEmail,
+    phone: schoolPhone,
+    submissionDate: new Date().toISOString().split('T')[0],
+    status: 'pending'
+  });
+  localStorage.setItem('govschools_verification_queue', JSON.stringify(verificationQueue));
+  
+  // Show success message
+  showToast(`✅ Registration submitted! You will receive credentials at ${schoolEmail} once approved.`, 'success');
+  
+  // Store registration ID for reference
+  localStorage.setItem('last_registration_id', registration.id);
+  
+  // Reset form
+  document.getElementById('schoolRegisterForm').reset();
+  
+  // Redirect after 3 seconds
+  setTimeout(() => {
+    window.location.href = 'registration-success.html?id=' + registration.id;
+  }, 3000);
+});
+
+// Dark mode
+function initDarkMode() {
+  const isDark = localStorage.getItem('govschools_dark') === '1';
+  if (isDark) document.body.classList.add('dark');
+}
+
+initDarkMode();
+populateCounties();
+</script>
+</body>
+</html>

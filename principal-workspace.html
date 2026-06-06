@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Principal Workspace — GovSchools Kenya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #006B3F;
+      --primary-light: #129a5f;
+      --primary-dark: #004d2e;
+      --secondary: #990000;
+      --dark-bg: #0b0f19;
+      --dark-card: #161c2a;
+      --light-bg: #f8fafc;
+      --light-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --transition: all 0.3s ease;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--light-bg);
+      color: var(--text-main);
+      transition: var(--transition);
+    }
+    body.dark {
+      background-color: var(--dark-bg);
+      color: #f1f5f9;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    .announcement-strip {
+      background: var(--primary-dark);
+      color: white;
+      text-align: center;
+      padding: 10px 24px;
+      font-size: 0.8rem;
+      font-family: var(--font-display);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid var(--primary);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    body.dark header { background: rgba(11, 15, 25, 0.95); }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; }
+    .logo-shield { width: 42px; height: 42px; background: var(--primary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; }
+    .logo-text strong { display: block; font-family: var(--font-display); font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
+    .logo-text span { font-size: 0.7rem; color: var(--text-muted); }
+    .desktop-nav { display: flex; gap: 32px; }
+    .desktop-nav a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; transition: var(--transition); }
+    .desktop-nav a:hover { color: var(--primary); }
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .dark-toggle { background: transparent; border: 1px solid var(--border); color: var(--text-main); width: 38px; height: 38px; border-radius: var(--radius-md); cursor: pointer; }
+
+    .dashboard-frame { display: flex; min-height: calc(100vh - 110px); }
+    .sidebar {
+      width: 280px;
+      background: var(--light-card);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      position: sticky;
+      top: 73px;
+      height: calc(100vh - 73px);
+      overflow-y: auto;
+    }
+    body.dark .sidebar { background: var(--dark-card); }
+    .sidebar-user {
+      background: var(--light-bg);
+      padding: 20px;
+      margin: 0 16px 20px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+    .sidebar-user h4 { font-family: var(--font-display); margin-bottom: 4px; }
+    .sidebar-user p { font-size: 0.75rem; color: var(--text-muted); }
+    .sidebar-menu { list-style: none; }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+      cursor: pointer;
+    }
+    .sidebar-link:hover, .sidebar-link.active {
+      background: rgba(0, 107, 63, 0.1);
+      color: var(--primary);
+      border-left-color: var(--primary);
+    }
+
+    .main-viewport { flex: 1; padding: 28px 32px; overflow-x: auto; }
+    .view-header { margin-bottom: 28px; }
+    .view-header h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; color: var(--primary); }
+    .view-header p { color: var(--text-muted); margin-top: 4px; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 32px; }
+    .stat-card { background: var(--light-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
+    body.dark .stat-card { background: var(--dark-card); }
+    .stat-card .stat-value { font-size: 1.8rem; font-weight: 800; font-family: var(--font-display); color: var(--primary); }
+    .stat-card .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; }
+
+    .panel-form { background: var(--light-card); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 24px; }
+    body.dark .panel-form { background: var(--dark-card); }
+    .panel-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
+    .form-control { width: 100%; padding: 10px 14px; font-size: 0.9rem; border: 1px solid var(--border); border-radius: 8px; background: var(--light-bg); color: var(--text-main); transition: var(--transition); }
+    body.dark .form-control { background: var(--dark-bg); }
+    .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,107,63,0.1); }
+    .btn-primary { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 10px 20px; border-radius: var(--radius-md); font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+
+    .table-surface { background: var(--light-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow-x: auto; }
+    body.dark .table-surface { background: var(--dark-card); }
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th, .data-table td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+    .data-table th { font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; background: rgba(0,0,0,0.02); }
+    .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: var(--radius-full); font-size: 0.7rem; font-weight: 600; }
+    .status-pending { background: #fef3c7; color: #d97706; }
+    .status-approved { background: #d1fae5; color: #059669; }
+    .status-rejected { background: #fee2e2; color: #dc2626; }
+    body.dark .status-pending { background: #451a03; color: #fbbf24; }
+    body.dark .status-approved { background: #064e3b; color: #34d399; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 1100; display: flex; flex-direction: column; gap: 10px; }
+    .custom-toast { background: var(--light-card); border-left: 4px solid var(--primary); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; gap: 10px; animation: slideInRight 0.3s ease; }
+    @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    footer { background: #0b0f19; color: #94a3b8; padding: 40px 24px 30px; margin-top: 60px; text-align: center; }
+
+    @media (max-width: 768px) {
+      .dashboard-frame { flex-direction: column; }
+      .sidebar { width: 100%; position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 16px; }
+      .sidebar-menu { display: flex; flex-wrap: wrap; gap: 8px; }
+      .sidebar-link { border-left: none; border-radius: var(--radius-md); padding: 10px 16px; }
+      .main-viewport { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="announcement-strip">
+  <span class="dot"></span>
+  <span>🏫 Principal Workspace | Manage Applications | Update School Information</span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo"><div class="logo-shield"><i class="fa-solid fa-chalkboard-user"></i></div><div class="logo-text"><strong>GovSchools Kenya</strong><span>Principal Workspace</span></div></a>
+    <nav class="desktop-nav"><a href="index.html">Home</a><a href="search.html">Find Schools</a><a href="dashboard.html">My Applications</a></nav>
+    <div class="header-actions"><button class="dark-toggle" id="darkToggle"><i class="fa-regular fa-moon"></i></button><button class="btn-secondary" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button></div>
+  </div>
+</header>
+
+<div class="dashboard-frame">
+  <aside class="sidebar">
+    <div class="sidebar-user"><h4 id="principalName">Loading...</h4><p id="schoolInfo">School: Loading...</p><p id="tscInfo">TSC: Loading...</p></div>
+    <ul class="sidebar-menu">
+      <li><a href="#" class="sidebar-link active" data-tab="dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="applications"><i class="fa-solid fa-users-viewfinder"></i> Student Applications</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="capacity"><i class="fa-solid fa-sliders"></i> Capacity Manager</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="profile"><i class="fa-solid fa-building"></i> School Profile</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="password"><i class="fa-solid fa-key"></i> Change Password</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-viewport">
+    <!-- Dashboard Tab -->
+    <div id="dashboardTab" class="tab-content active">
+      <div class="view-header"><h2><i class="fa-solid fa-chart-line"></i> School Dashboard</h2><p>Overview of your school's performance and application statistics</p></div>
+      <div class="stats-grid" id="dashboardStats"></div>
+      <div class="panel-form"><h3 class="panel-title"><i class="fa-solid fa-bell"></i> Recent Activity</h3><div id="recentActivity"></div></div>
+    </div>
+
+    <!-- Applications Tab -->
+    <div id="applicationsTab" class="tab-content">
+      <div class="view-header"><h2><i class="fa-solid fa-users-viewfinder"></i> Student Applications</h2><p>Review and manage student applications to your school</p></div>
+      <div class="table-surface"><table class="data-table"><thead><tr><th>Ref No.</th><th>Student Name</th><th>Parent Contact</th><th>KCPE Marks</th><th>Application Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="applicationsBody"></tbody></table></div>
+    </div>
+
+    <!-- Capacity Manager Tab -->
+    <div id="capacityTab" class="tab-content">
+      <div class="view-header"><h2><i class="fa-solid fa-sliders"></i> Capacity Manager</h2><p>Update your school's available slots and fee structure</p></div>
+      <div class="panel-form"><h3 class="panel-title">Update Capacity & Fees</h3>
+        <div class="form-grid"><div class="form-group"><label>Total Available Slots</label><input type="number" class="form-control" id="totalSlots"></div>
+        <div class="form-group"><label>Remaining Slots</label><input type="number" class="form-control" id="remainingSlots"></div>
+        <div class="form-group"><label>Annual Tuition Fees (KES)</label><input type="number" class="form-control" id="tuitionFees"></div>
+        <div class="form-group"><label>Boarding Fees (KES)</label><input type="number" class="form-control" id="boardingFees"></div></div>
+        <button class="btn-primary" onclick="updateCapacity()"><i class="fa-solid fa-save"></i> Update Capacity</button>
+      </div>
+    </div>
+
+    <!-- School Profile Tab -->
+    <div id="profileTab" class="tab-content">
+      <div class="view-header"><h2><i class="fa-solid fa-building"></i> School Profile</h2><p>View and update your school information</p></div>
+      <div class="panel-form"><h3 class="panel-title">School Details</h3>
+        <div class="form-grid"><div class="form-group"><label>School Name</label><input type="text" class="form-control" id="schoolName" disabled></div>
+        <div class="form-group"><label>NEMIS Code</label><input type="text" class="form-control" id="nemisCode" disabled></div>
+        <div class="form-group"><label>County</label><input type="text" class="form-control" id="schoolCounty" disabled></div>
+        <div class="form-group"><label>Category</label><input type="text" class="form-control" id="schoolCategory" disabled></div>
+        <div class="form-group"><label>Principal Name</label><input type="text" class="form-control" id="principalNameField"></div>
+        <div class="form-group"><label>School Phone</label><input type="tel" class="form-control" id="schoolPhone"></div>
+        <div class="form-group"><label>School Email</label><input type="email" class="form-control" id="schoolEmail"></div>
+        <div class="form-group"><label>Physical Address</label><input type="text" class="form-control" id="schoolAddress"></div></div>
+        <button class="btn-primary" onclick="updateProfile()"><i class="fa-solid fa-save"></i> Update Profile</button>
+      </div>
+    </div>
+
+    <!-- Change Password Tab -->
+    <div id="passwordTab" class="tab-content">
+      <div class="view-header"><h2><i class="fa-solid fa-key"></i> Change Password</h2><p>Update your account password</p></div>
+      <div class="panel-form" style="max-width: 500px;"><h3 class="panel-title">Security Settings</h3>
+        <div class="form-group"><label>Current Password</label><input type="password" class="form-control" id="currentPassword"></div>
+        <div class="form-group"><label>New Password</label><input type="password" class="form-control" id="newPassword"></div>
+        <div class="form-group"><label>Confirm New Password</label><input type="password" class="form-control" id="confirmPassword"></div>
+        <button class="btn-primary" onclick="changePassword()"><i class="fa-solid fa-key"></i> Change Password</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer><div class="footer-inner"><p>© 2027 Ministry of Education, Republic of Kenya. All rights reserved.</p></div></footer>
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/school-data.js"></script>
+<script>
+let currentPrincipal = null;
+let currentSchool = null;
+let schoolApplications = [];
+
+function init() {
+  const session = JSON.parse(localStorage.getItem('govschools_session') || 'null');
+  if (!session || session.role !== 'principal') { window.location.href = 'access-gateway.html'; return; }
+  currentPrincipal = session;
+  loadSchoolData();
+  loadApplications();
+  checkFirstLogin();
+}
+
+function loadSchoolData() {
+  const schools = window.SCHOOL_DATA.getAllSchools();
+  currentSchool = schools.find(s => s.id === currentPrincipal.schoolId) || schools.find(s => s.principal === currentPrincipal.name);
+  if (!currentSchool) { showToast('School data not found!', 'error'); return; }
+  document.getElementById('principalName').innerHTML = `<i class="fa-solid fa-user-tie"></i> ${currentPrincipal.name}`;
+  document.getElementById('schoolInfo').innerHTML = `<i class="fa-solid fa-school"></i> ${currentSchool.name}`;
+  document.getElementById('tscInfo').innerHTML = `<i class="fa-solid fa-id-card"></i> TSC: ${currentPrincipal.tscNumber || 'N/A'}`;
+  document.getElementById('schoolName').value = currentSchool.name;
+  document.getElementById('nemisCode').value = currentSchool.nemis;
+  document.getElementById('schoolCounty').value = currentSchool.county;
+  document.getElementById('schoolCategory').value = currentSchool.category;
+  document.getElementById('principalNameField').value = currentSchool.principal || currentPrincipal.name;
+  document.getElementById('totalSlots').value = currentSchool.slots;
+  document.getElementById('remainingSlots').value = currentSchool.remaining;
+  updateDashboardStats();
+}
+
+function loadApplications() {
+  const allApps = JSON.parse(localStorage.getItem('govschools_applications') || '[]');
+  schoolApplications = allApps.filter(a => a.schoolId === currentSchool?.id);
+  const tbody = document.getElementById('applicationsBody');
+  tbody.innerHTML = schoolApplications.map(app => `
+    <tr><td><code>${app.referenceNumber || app.id}</code></td><td><strong>${app.studentName}</strong></td><td>${app.parentPhone || 'N/A'}</td><td>${app.marks || 'N/A'}</td><td>${new Date(app.applicationDate).toLocaleDateString()}</td><td><span class="status-badge status-${app.status}">${app.status}</span><td>${app.status === 'pending' ? `<button class="btn-secondary" onclick="updateAppStatus('${app.id}', 'approved')" style="background:#10b981; color:white; margin-right:4px;">Approve</button><button class="btn-secondary" onclick="updateAppStatus('${app.id}', 'rejected')" style="background:#dc2626; color:white;">Reject</button>` : '-'}</td></tr>`).join('');
+  updateDashboardStats();
+}
+
+function updateAppStatus(appId, newStatus) {
+  const allApps = JSON.parse(localStorage.getItem('govschools_applications') || '[]');
+  const appIndex = allApps.findIndex(a => a.id == appId);
+  if (appIndex !== -1) { allApps[appIndex].status = newStatus; localStorage.setItem('govschools_applications', JSON.stringify(allApps)); showToast(`Application ${newStatus}!`, 'success'); loadApplications(); updateDashboardStats(); }
+}
+
+function updateDashboardStats() {
+  const pending = schoolApplications.filter(a => a.status === 'pending').length;
+  const approved = schoolApplications.filter(a => a.status === 'approved').length;
+  document.getElementById('dashboardStats').innerHTML = `<div class="stat-card"><div class="stat-value">${schoolApplications.length}</div><div class="stat-label">Total Applications</div></div><div class="stat-card"><div class="stat-value">${pending}</div><div class="stat-label">Pending Review</div></div><div class="stat-card"><div class="stat-value">${approved}</div><div class="stat-label">Admitted</div></div><div class="stat-card"><div class="stat-value">${currentSchool?.remaining || 0}</div><div class="stat-label">Available Slots</div></div>`;
+  const recent = schoolApplications.slice(0, 5).map(a => `<p><i class="fa-regular fa-clock"></i> ${a.studentName} - ${a.status} on ${new Date(a.applicationDate).toLocaleDateString()}</p>`).join('');
+  document.getElementById('recentActivity').innerHTML = recent || '<p>No recent applications</p>';
+}
+
+function updateCapacity() {
+  const total = parseInt(document.getElementById('totalSlots').value);
+  const remaining = parseInt(document.getElementById('remainingSlots').value);
+  if (total && remaining) { window.SCHOOL_DATA.updateSchool(currentSchool.id, { slots: total, remaining: remaining }); showToast('Capacity updated successfully!', 'success'); loadSchoolData(); }
+}
+
+function updateProfile() {
+  const updates = { principal: document.getElementById('principalNameField').value };
+  window.SCHOOL_DATA.updateSchool(currentSchool.id, updates);
+  showToast('Profile updated successfully!', 'success');
+}
+
+function changePassword() {
+  const current = document.getElementById('currentPassword').value;
+  const newPwd = document.getElementById('newPassword').value;
+  const confirm = document.getElementById('confirmPassword').value;
+  if (newPwd !== confirm) { showToast('New passwords do not match!', 'error'); return; }
+  if (newPwd.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
+  const users = JSON.parse(localStorage.getItem('govschools_users') || '[]');
+  const userIndex = users.findIndex(u => u.phone === currentPrincipal.phone);
+  if (userIndex !== -1 && users[userIndex].password === current) { users[userIndex].password = newPwd; users[userIndex].mustChangePassword = false; localStorage.setItem('govschools_users', JSON.stringify(users)); showToast('Password changed successfully!', 'success'); document.getElementById('currentPassword').value = ''; document.getElementById('newPassword').value = ''; document.getElementById('confirmPassword').value = ''; } else { showToast('Current password is incorrect', 'error'); }
+}
+
+function checkFirstLogin() {
+  if (currentPrincipal.mustChangePassword) { showToast('Please change your temporary password before continuing.', 'warning'); switchTab('password'); }
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById(`${tabId}Tab`).classList.add('active');
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+  if (tabId === 'applications') loadApplications();
+  if (tabId === 'dashboard') loadSchoolData();
+}
+
+function showToast(msg, type) { const c = document.getElementById('toastContainer'); const t = document.createElement('div'); t.className = 'custom-toast'; const i = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; const col = type === 'success' ? '#10b981' : '#ef4444'; t.innerHTML = `<i class="fa-solid ${i}" style="color:${col}"></i> ${msg}`; c.appendChild(t); setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 4000); }
+function logout() { localStorage.removeItem('govschools_session'); window.location.href = 'access-gateway.html'; }
+function toggleDark() { document.body.classList.toggle('dark'); localStorage.setItem('govschools_dark', document.body.classList.contains('dark') ? '1' : '0'); }
+document.getElementById('darkToggle')?.addEventListener('click', toggleDark);
+if (localStorage.getItem('govschools_dark') === '1') document.body.classList.add('dark');
+document.querySelectorAll('[data-tab]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); switchTab(link.getAttribute('data-tab')); }));
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

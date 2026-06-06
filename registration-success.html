@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Submitted - GovSchools Kenya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #006B3F;
+      --primary-light: #129a5f;
+      --secondary: #990000;
+      --dark-bg: #0b0f19;
+      --light-bg: #f8fafc;
+      --light-card: #ffffff;
+      --text-main: #1e293b;
+      --border: #e2e8f0;
+      --radius-lg: 20px;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-sans);
+      background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    body.dark {
+      background: linear-gradient(135deg, #0b0f19 0%, #0f1419 100%);
+    }
+    .success-card {
+      background: var(--light-card);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    body.dark .success-card {
+      background: #1a1f2e;
+    }
+    .success-icon {
+      font-size: 4rem;
+      color: #10b981;
+      margin-bottom: 20px;
+    }
+    h1 { font-family: var(--font-display); color: var(--primary); margin-bottom: 16px; }
+    .ref-code { background: #f3f4f6; padding: 12px; border-radius: 8px; font-family: monospace; margin: 20px 0; }
+    body.dark .ref-code { background: #2d3748; }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="success-card">
+  <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+  <h1>Registration Submitted!</h1>
+  <p>Your school registration has been received and is pending Ministry verification.</p>
+  <div class="ref-code" id="refCode">Reference: Loading...</div>
+  <p style="margin: 16px 0; color: var(--text-muted); font-size: 0.85rem;">
+    <i class="fa-solid fa-envelope"></i> You will receive an email with login credentials once your registration is approved.<br><br>
+    <strong>What happens next?</strong><br>
+    1. Ministry reviews your application (1-3 business days)<br>
+    2. Upon approval, you receive temporary password<br>
+    3. Login and change your password immediately
+  </p>
+  <a href="access-gateway.html" class="btn-primary"><i class="fa-solid fa-arrow-right-to-bracket"></i> Go to Login</a>
+</div>
+<script>
+  const id = new URLSearchParams(window.location.search).get('id');
+  document.getElementById('refCode').innerHTML = `Registration ID: ${id || 'Pending'}`;
+  if (localStorage.getItem('govschools_dark') === '1') document.body.classList.add('dark');
+</script>
+</body>
+</html>

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Access Gateway — GovSchools Kenya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #006B3F;
+      --primary-light: #129a5f;
+      --primary-dark: #004d2e;
+      --secondary: #990000;
+      --secondary-light: #cc0000;
+      --dark: #0b0f19;
+      --dark-card: #161c2a;
+      --light-bg: #f8fafc;
+      --light-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: var(--font-sans);
+      background: linear-gradient(135deg, var(--light-bg) 0%, #e2e8f0 100%);
+      color: var(--text-main);
+      transition: var(--transition);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    body.dark {
+      background: linear-gradient(135deg, var(--dark) 0%, #0f1419 100%);
+      color: #f1f5f9;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --light-card: var(--dark-card);
+    }
+
+    /* Announcement Strip */
+    .announcement-strip {
+      background: var(--primary-dark);
+      color: white;
+      text-align: center;
+      padding: 10px 24px;
+      font-size: 0.85rem;
+      font-family: var(--font-display);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .announcement-strip .flag {
+      display: flex;
+      gap: 4px;
+    }
+    .announcement-strip .flag span {
+      width: 20px;
+      height: 14px;
+      display: inline-block;
+    }
+    .flag-black { background: #000000; }
+    .flag-red { background: #990000; }
+    .flag-green { background: #006B3F; }
+    .flag-white { background: #ffffff; }
+
+    /* Header */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid var(--primary);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: var(--transition);
+    }
+    body.dark header {
+      background: rgba(11, 15, 25, 0.95);
+    }
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+    .logo-shield {
+      width: 42px;
+      height: 42px;
+      background: var(--primary);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+    .logo-text strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .logo-text span {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .btn-outline {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    .btn-outline:hover {
+      background: rgba(0, 107, 63, 0.1);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .dark-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+    }
+    
+    /* Panel Form */
+    .panel-form {
+      background: var(--light-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      animation: fadeInUp 0.5s ease;
+    }
+    body.dark .panel-form {
+      background: var(--dark-card);
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .panel-form h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--light-bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      transition: var(--transition);
+    }
+    body.dark .form-control {
+      background: var(--dark);
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 107, 63, 0.1);
+    }
+    select.form-control {
+      cursor: pointer;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+    
+    /* Role Cards Preview */
+    .role-preview {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .role-preview h4 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .role-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .role-badge {
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: rgba(0, 107, 63, 0.1);
+      color: var(--primary);
+    }
+    body.dark .role-badge {
+      background: rgba(18, 154, 95, 0.2);
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding: 30px 24px;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+    
+    /* Alert/Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .custom-toast {
+      background: var(--light-card);
+      border-left: 4px solid var(--primary);
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideInRight 0.3s ease;
+    }
+    body.dark .custom-toast {
+      background: var(--dark-card);
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @media (max-width: 480px) {
+      .panel-form {
+        padding: 1.5rem;
+      }
+      .header-inner {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="announcement-strip">
+  <div class="flag">
+    <span class="flag-black"></span>
+    <span class="flag-red"></span>
+    <span class="flag-green"></span>
+    <span class="flag-white"></span>
+    <span class="flag-red"></span>
+    <span class="flag-green"></span>
+    <span class="flag-black"></span>
+  </div>
+  <span>🇰🇪 Ministry of Education - Official Access Gateway | Secure Role-Based Authentication</span>
+  <div class="flag">
+    <span class="flag-black"></span>
+    <span class="flag-red"></span>
+    <span class="flag-green"></span>
+  </div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-shield"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="logo-text">
+        <strong>GovSchools Kenya</strong>
+        <span>System Access Gateway</span>
+      </div>
+    </a>
+    <div class="header-actions">
+      <button class="dark-toggle" id="darkToggle"><i class="fa-regular fa-moon"></i></button>
+      <a href="index.html" class="btn-outline"><i class="fa-solid fa-arrow-left"></i> Back to Directory</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="panel-form">
+    <div style="text-align: center; margin-bottom: 28px;">
+      <div style="background: var(--primary); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+        <i class="fa-solid fa-lock" style="font-size: 1.8rem; color: white;"></i>
+      </div>
+      <h2>Identity Management Hub</h2>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 8px;">Select your dedicated dashboard role below</p>
+    </div>
+
+    <div class="form-group">
+      <label><i class="fa-solid fa-user-tag"></i> Select Workspace Dashboard Profile</label>
+      <select class="form-control" id="roleSelector" onchange="updateFormContext()">
+        <option value="parent">👨‍👩‍👧 Parent / Applicant Dashboard</option>
+        <option value="principal">🏫 School Principal Dashboard</option>
+        <option value="moe">🏛️ Ministry of Education Dashboard</option>
+        <option value="admin">⚙️ Platform System Administrator</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label id="identityLabel"><i class="fa-solid fa-id-card"></i> Parent / Guardian Phone Number</label>
+      <input type="text" class="form-control" id="identityInput" placeholder="e.g., 0712345678">
+    </div>
+
+    <div class="form-group">
+      <label id="secretLabel"><i class="fa-solid fa-key"></i> National ID Number / Password</label>
+      <input type="password" class="form-control" id="secretInput" placeholder="••••••••">
+    </div>
+
+    <button type="button" class="btn-primary" onclick="authenticateAndRoute()">
+      <i class="fa-solid fa-arrow-right-to-bracket"></i> Verify Credentials & Access
+    </button>
+
+    <div class="role-preview">
+      <h4><i class="fa-solid fa-shield-haltered"></i> Available Portals</h4>
+      <div class="role-badges">
+        <span class="role-badge"><i class="fa-solid fa-user"></i> Parent Portal</span>
+        <span class="role-badge"><i class="fa-solid fa-chalkboard-user"></i> Principal Workspace</span>
+        <span class="role-badge"><i class="fa-solid fa-building"></i> Ministry Panel</span>
+        <span class="role-badge"><i class="fa-solid fa-terminal"></i> Root Admin</span>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px; text-align: center; font-size: 0.7rem; color: var(--text-muted);">
+      <i class="fa-solid fa-shield-heart"></i> Secured under Kenya Data Protection Act 2019
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a>
+    <a href="#">Data Protection</a>
+    <a href="#">Contact Support</a>
+  </div>
+  <p>© 2027 Ministry of Education, Republic of Kenya. All rights reserved.</p>
+</footer>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+  // Demo credentials for testing
+  const DEMO_CREDENTIALS = {
+    parent: { identifier: "0712345678", secret: "123456", redirect: "dashboard.html" },
+    principal: { identifier: "NSC001", secret: "TSC-7741092", redirect: "principal-workspace.html" },
+    moe: { identifier: "admin@education.go.ke", secret: "moe2027", redirect: "ministry-panel.html" },
+    admin: { identifier: "root", secret: "admin123", redirect: "root-admin.html" }
+  };
+
+  function updateFormContext() {
+    const role = document.getElementById('roleSelector').value;
+    const identityLabel = document.getElementById('identityLabel');
+    const secretLabel = document.getElementById('secretLabel');
+    const identityInput = document.getElementById('identityInput');
+    const secretInput = document.getElementById('secretInput');
+    
+    // Clear previous values
+    identityInput.value = '';
+    secretInput.value = '';
+    
+    switch(role) {
+      case 'principal':
+        identityLabel.innerHTML = '<i class="fa-solid fa-building-columns"></i> School NEMIS Code';
+        secretLabel.innerHTML = '<i class="fa-solid fa-id-card"></i> Principal TSC Number';
+        identityInput.placeholder = "e.g., NSC001 or NSC-0421";
+        secretInput.placeholder = "e.g., TSC-7741092";
+        break;
+      case 'moe':
+        identityLabel.innerHTML = '<i class="fa-solid fa-envelope"></i> Official Ministry Email ID';
+        secretLabel.innerHTML = '<i class="fa-solid fa-fingerprint"></i> Government P-Number Passkey';
+        identityInput.placeholder = "name@education.go.ke";
+        secretInput.placeholder = "••••••••";
+        break;
+      case 'admin':
+        identityLabel.innerHTML = '<i class="fa-solid fa-user-secret"></i> System Admin Username';
+        secretLabel.innerHTML = '<i class="fa-solid fa-microchip"></i> Root Hardware Token Key';
+        identityInput.placeholder = "admin username";
+        secretInput.placeholder = "••••••••";
+        break;
+      default:
+        identityLabel.innerHTML = '<i class="fa-solid fa-phone"></i> Parent / Guardian Phone Number';
+        secretLabel.innerHTML = '<i class="fa-solid fa-id-card"></i> National ID Number / Password';
+        identityInput.placeholder = "e.g., 0712345678";
+        secretInput.placeholder = "••••••••";
+    }
+  }
+
+  function showToast(message, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'custom-toast';
+    
+    let icon = 'fa-circle-check';
+    let color = 'var(--primary)';
+    if (type === 'error') { icon = 'fa-circle-exclamation'; color = '#dc2626'; }
+    if (type === 'warning') { icon = 'fa-triangle-exclamation'; color = '#f59e0b'; }
+    
+    toast.style.borderLeftColor = color;
+    toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color};"></i> ${message}`;
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(100%)';
+      setTimeout(() => toast.remove(), 300);
+    }, 4000);
+  }
+
+  function authenticateAndRoute() {
+    const role = document.getElementById('roleSelector').value;
+    const identifier = document.getElementById('identityInput').value.trim();
+    const secret = document.getElementById('secretInput').value.trim();
+    
+    // Validation
+    if (!identifier || !secret) {
+      showToast('Please enter both credentials to continue', 'error');
+      return;
+    }
+    
+    // Check against demo credentials or localStorage
+    let isValid = false;
+    let userData = null;
+    
+    if (role === 'parent') {
+      // Check localStorage for registered users
+      const users = JSON.parse(localStorage.getItem('govschools_users') || '[]');
+      const foundUser = users.find(u => u.phone === identifier && u.password === secret);
+      
+      if (foundUser) {
+        isValid = true;
+        userData = { name: foundUser.name, phone: foundUser.phone, role: 'parent' };
+      } else if (identifier === DEMO_CREDENTIALS.parent.identifier && secret === DEMO_CREDENTIALS.parent.secret) {
+        isValid = true;
+        userData = { name: 'Demo Parent', phone: identifier, role: 'parent' };
+      }
+    } 
+    else if (role === 'principal') {
+      // Check school configuration
+      const schoolConfig = localStorage.getItem(`school_config_1`);
+      if (schoolConfig) {
+        const config = JSON.parse(schoolConfig);
+        if (config.principalTsc === secret && (config.schoolId === 1 || identifier === "NSC001")) {
+          isValid = true;
+          userData = { name: config.principalName || 'School Principal', tsc: secret, role: 'principal', schoolId: 1 };
+        }
+      }
+      // Demo principal
+      if (!isValid && identifier === DEMO_CREDENTIALS.principal.identifier && secret === DEMO_CREDENTIALS.principal.secret) {
+        isValid = true;
+        userData = { name: 'Dr. Ezekiel Kemboi', tsc: secret, role: 'principal', schoolId: 1 };
+      }
+    }
+    else if (role === 'moe') {
+      if (identifier === DEMO_CREDENTIALS.moe.identifier && secret === DEMO_CREDENTIALS.moe.secret) {
+        isValid = true;
+        userData = { name: 'Ministry Admin', email: identifier, role: 'moe' };
+      }
+    }
+    else if (role === 'admin') {
+      if (identifier === DEMO_CREDENTIALS.admin.identifier && secret === DEMO_CREDENTIALS.admin.secret) {
+        isValid = true;
+        userData = { name: 'System Administrator', username: identifier, role: 'admin' };
+      }
+    }
+    
+    if (isValid && userData) {
+      // Store session
+      localStorage.setItem('govschools_session', JSON.stringify(userData));
+      
+      // Add login log
+      const logs = JSON.parse(localStorage.getItem('govschools_logs') || '[]');
+      logs.unshift({
+        timestamp: new Date().toISOString(),
+        user: userData.name || userData.email || userData.username,
+        role: role,
+        action: 'Login',
+        ip: '127.0.0.1',
+        details: `Successful login to ${role} portal`
+      });
+      localStorage.setItem('govschools_logs', JSON.stringify(logs.slice(0, 100)));
+      
+      showToast(`Welcome ${userData.name}! Redirecting to your dashboard...`, 'success');
+      
+      // Redirect based on role
+      setTimeout(() => {
+        switch(role) {
+          case 'parent':
+            window.location.href = 'dashboard.html';
+            break;
+          case 'principal':
+            window.location.href = 'principal-workspace.html';
+            break;
+          case 'moe':
+            window.location.href = 'ministry-panel.html';
+            break;
+          case 'admin':
+            window.location.href = 'root-admin.html';
+            break;
+        }
+      }, 1000);
+    } else {
+      showToast('Invalid credentials. Please check your login details and try again.', 'error');
+      
+      // Log failed attempt
+      const logs = JSON.parse(localStorage.getItem('govschools_logs') || '[]');
+      logs.unshift({
+        timestamp: new Date().toISOString(),
+        user: identifier || 'unknown',
+        role: role,
+        action: 'Failed Login',
+        ip: '127.0.0.1',
+        details: `Failed login attempt to ${role} portal`
+      });
+      localStorage.setItem('govschools_logs', JSON.stringify(logs.slice(0, 100)));
+    }
+  }
+
+  // Enter key support
+  function setupEnterKey() {
+    const inputs = ['identityInput', 'secretInput'];
+    inputs.forEach(id => {
+      const input = document.getElementById(id);
+      if (input) {
+        input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') authenticateAndRoute();
+        });
+      }
+    });
+  }
+
+  // Dark mode
+  function toggleDark() {
+    document.body.classList.toggle('dark');
+    localStorage.setItem('govschools_dark', document.body.classList.contains('dark') ? '1' : '0');
+    const icon = document.querySelector('#darkToggle i');
+    if (icon) icon.className = document.body.classList.contains('dark') ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+  }
+
+  // Check for existing session
+  function checkExistingSession() {
+    const session = JSON.parse(localStorage.getItem('govschools_session') || 'null');
+    if (session && window.location.pathname.includes('access-gateway.html')) {
+      // Auto-redirect if already logged in
+      const role = session.role;
+      showToast(`Already logged in as ${session.name}. Redirecting...`, 'info');
+      setTimeout(() => {
+        switch(role) {
+          case 'parent': window.location.href = 'dashboard.html'; break;
+          case 'principal': window.location.href = 'principal-workspace.html'; break;
+          case 'moe': window.location.href = 'ministry-panel.html'; break;
+          case 'admin': window.location.href = 'root-admin.html'; break;
+          default: window.location.href = 'index.html';
+        }
+      }, 1500);
+    }
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    updateFormContext();
+    setupEnterKey();
+    
+    document.getElementById('darkToggle')?.addEventListener('click', toggleDark);
+    if (localStorage.getItem('govschools_dark') === '1') {
+      document.body.classList.add('dark');
+      const icon = document.querySelector('#darkToggle i');
+      if (icon) icon.className = 'fa-solid fa-sun';
+    }
+    
+    checkExistingSession();
+  });
+</script>
+</body>
+</html>

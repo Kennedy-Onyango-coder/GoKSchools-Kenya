@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GovSchools Kenya — Official School Admissions Portal</title>
+  <meta name="description" content="Search, apply and track admissions to any government school in Kenya. Official MoE portal." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
+  <style>
+    /* Global Variables */
+    :root {
+      --primary: #006B3F;
+      --primary-light: #129a5f;
+      --secondary: #990000;
+      --dark-bg: #0b0f19;
+      --dark-card: #161c2a;
+      --light-bg: #f8fafc;
+      --light-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Base Styles */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--light-bg);
+      color: var(--text-main);
+      overflow-x: hidden;
+      transition: var(--transition);
+      line-height: 1.6;
+    }
+    body.dark {
+      background-color: var(--dark-bg);
+      color: #f1f5f9;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
+    .section-header { text-align: center; max-width: 700px; margin: 0 auto 50px; }
+    .section-label { color: var(--primary); font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 12px; }
+    .section-title { font-family: var(--font-display); font-size: 2.25rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 16px; }
+    .section-subtitle { color: var(--text-muted); font-size: 1.1rem; }
+    
+    .btn-primary, .btn-ghost, .btn-full {
+      font-family: var(--font-display); font-weight: 700; font-size: 0.9rem;
+      padding: 10px 20px; border-radius: var(--radius-md); border: none;
+      cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; transition: var(--transition); text-decoration: none;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+    .btn-ghost:hover { background: rgba(0,0,0,0.04); }
+    body.dark .btn-ghost:hover { background: rgba(255,255,255,0.04); }
+    .btn-full { width: 100%; background: var(--primary); color: white; padding: 14px; font-size: 1rem; }
+
+    .announcement-strip {
+      background: #111827; color: #f3f4f6; text-align: center; padding: 10px 24px;
+      font-size: 0.85rem; font-family: var(--font-display); font-weight: 500;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    .announcement-strip .dot { height: 8px; width: 8px; background: #ef4444; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
+
+    header {
+      background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100;
+    }
+    body.dark header { background: rgba(11, 15, 25, 0.8); }
+    .header-inner { max-width: 1280px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    
+    .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; }
+    .logo-text strong { display: block; font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; color: var(--text-main); line-height: 1.2; }
+    .logo-text span { font-size: 0.8rem; color: var(--text-muted); display: block; }
+    
+    .desktop-nav { display: flex; gap: 32px; }
+    .desktop-nav a { text-decoration: none; color: var(--text-muted); font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; transition: var(--transition); }
+    .desktop-nav a:hover, .desktop-nav a.active { color: var(--primary); }
+    
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .dark-toggle { background: transparent; border: 1px solid var(--border); color: var(--text-main); width: 40px; height: 40px; border-radius: var(--radius-md); cursor: pointer; }
+    .hamburger { display: none; background: transparent; border: none; cursor: pointer; flex-direction: column; gap: 6px; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text-main); border-radius: 2px; }
+
+    .mobile-nav { position: fixed; inset: 0; z-index: 999; opacity: 0; pointer-events: none; transition: var(--transition); background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); }
+    .mobile-nav.open { opacity: 1; pointer-events: auto; }
+    .mobile-nav-panel { position: fixed; top: 0; right: -280px; bottom: 0; width: 280px; background: var(--light-card); padding: 24px; display: flex; flex-direction: column; gap: 16px; transition: var(--transition); }
+    body.dark .mobile-nav-panel { background: var(--dark-card); }
+    .mobile-nav.open .mobile-nav-panel { right: 0; }
+    .mobile-nav-close { align-self: flex-end; background: transparent; border: none; font-size: 1.5rem; cursor: pointer; }
+
+    .hero { background: radial-gradient(120% 120% at 50% 10%, transparent 40%, rgba(0, 107, 63, 0.05) 100%); padding: 100px 24px 80px; text-align: center; }
+    .hero-inner { max-width: 840px; margin: 0 auto; }
+    .hero-badge { background: rgba(0, 107, 63, 0.08); color: var(--primary); font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; padding: 6px 16px; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px; }
+    .hero h1 { font-family: var(--font-display); font-size: 3.5rem; font-weight: 800; letter-spacing: -1.5px; line-height: 1.15; margin-bottom: 24px; }
+    .hero h1 em { font-style: normal; color: var(--primary); display: inline-block; }
+    .hero p { color: var(--text-muted); font-size:  .25rem; max-width: 640px; margin: 0 auto 40px; }
+    
+    .hero-search { background: var(--light-card); border: 1px solid var(--border); padding: 8px 8px 8px 24px; border-radius: var(--radius-lg); display: flex; align-items: center; gap: 14px; max-width: 640px; margin: 0 auto 48px; }
+    body.dark .hero-search { background: var(--dark-card); }
+    .hero-search input { border: none; background: transparent; font-size: 1.05rem; color: var(--text-main); width: 100%; outline: none; }
+    .hero-search button { background: var(--primary); color: white; border: none; font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; padding: 14px 28px; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    
+    .hero-stats { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; color: var(--text-muted); font-size: 0.95rem; }
+    .hero-stat strong { color: var(--text-main); font-weight: 700; }
+
+    .filter-pills-section { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--light-card); position: sticky; top: 73px; z-index: 90; }
+    body.dark .filter-pills-section { background: var(--dark-card); }
+    .filter-pills-inner { max-width: 1280px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 10px; overflow-x: auto; }
+    .filter-pills-label { font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; white-space: nowrap; }
+    .pill { background: var(--light-bg); border: 1px solid var(--border); color: var(--text-main); font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; padding: 8px 16px; border-radius: var(--radius-full); cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    .steps-section { background-color: var(--light-card); }
+    body.dark .steps-section { background-color: var(--dark-card); }
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; }
+    .step-card { background: var(--light-bg); border: 1px solid var(--border); padding: 40px 32px; border-radius: var(--radius-lg); position: relative; }
+    .step-number { position: absolute; top: 24px; right: 32px; font-family: var(--font-display); font-size: 2.5rem; font-weight: 800; color: rgba(0,0,0,0.04); }
+    .step-icon { height: 48px; width: 48px; background: rgba(0, 107, 63, 0.08); color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md); font-size: 1.25rem; margin-bottom: 24px; }
+    .step-card h3 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; }
+    .step-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+    .schools-bg { background: var(--light-bg); }
+    body.dark .schools-bg { background: var(--dark-bg); }
+    .schools-scroll-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 32px; }
+    .school-card { background: var(--light-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; transition: var(--transition); }
+    body.dark .school-card { background: var(--dark-card); }
+    .school-card:hover { transform: translateY(-4px); border-color: var(--primary); }
+    
+    .school-card-header { padding: 28px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .school-initial { height: 44px; width: 44px; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); color: white; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md); font-weight: 800; font-size: 1.25rem; }
+    .school-slots-badge { background: rgba(255,255,255,0.2); color: white; padding: 4px 12px; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700; }
+    .school-slots-badge.urgent { background: #ef4444; animation: pulse 2s infinite; }
+    
+    .school-card-body { padding: 24px; flex-grow: 1; }
+    .school-card-body h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; margin-bottom: 6px; }
+    .school-card-location { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; }
+    
+    .school-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+    .tag { font-family: var(--font-display); font-weight: 600; font-size: 0.7rem; padding: 3px 10px; border-radius: var(--radius-full); text-transform: uppercase; border: 1px solid transparent; }
+    .tag-national { background: rgba(0, 107, 63, 0.06); color: var(--primary); }
+    .tag-boys { background: #eff6ff; color: #1d4ed8; }
+    .tag-girls { background: #fdf2f8; color: #be185d; }
+    .tag-boarding { background: #f5f5f5; color: #404040; }
+    
+    .slots-bar { height: 6px; background: var(--border); border-radius: var(--radius-full); overflow: hidden; margin-bottom: 20px; }
+    .slots-bar-fill { height: 100%; transition: width 0.5s ease; }
+    
+    .school-score-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; padding-top: 16px; border-top: 1px dashed var(--border); text-align: center; }
+    .score-item .val { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; }
+    .score-item .lbl { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+    .score-divider { width: 1px; height: 28px; background: var(--border); }
+    
+    .school-card-footer { padding: 0 24px 24px; }
+    .btn-apply { width: 100%; background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 11px; border-radius: var(--radius-md); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+    .school-card:hover .btn-apply { background: var(--primary); color: white; }
+
+    .trust-section { background: linear-gradient(135deg, #0b1320 0%, #111c30 100%); color: white; padding: 90px 24px; }
+    .trust-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: center; }
+    .trust-content h2 { font-family: var(--font-display); font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; }
+    .trust-content p { color: #94a3b8; font-size: 1.1rem; margin-bottom: 36px; }
+    .trust-btn { background: var(--primary-light); color: #0b0f19; font-family: var(--font-display); font-weight: 700; padding: 14px 32px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
+    
+    .trust-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .trust-stat-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 32px 24px; border-radius: var(--radius-lg); backdrop-filter: blur(8px); }
+    .trust-stat-card .number { font-family: var(--font-display); font-size: 2.25rem; font-weight: 800; color: white; }
+    .trust-stat-card .label { color: #94a3b8; font-size: 0.9rem; }
+
+    .counties-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .county-chip { background: var(--light-card); border: 1px solid var(--border); padding: 16px 20px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: inherit; transition: var(--transition); }
+    body.dark .county-chip { background: var(--dark-card); }
+    .county-chip:hover { border-color: var(--primary); transform: translateX(2px); }
+    .county-name { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; }
+    .county-schools { font-size: 0.8rem; color: var(--text-muted); background: var(--light-bg); padding: 2px 8px; border-radius: var(--radius-full); }
+
+    footer { background: #0b0f19; color: #94a3b8; border-top: 1px solid #1e293b; padding: 80px 24px 30px; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 48px; margin-bottom: 60px; }
+    .footer-col h4 { font-family: var(--font-display); color: white; font-size: 0.95rem; font-weight: 700; margin-bottom: 24px; text-transform: uppercase; }
+    .footer-col a { display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; }
+    .footer-col a:hover { color: var(--primary-light); }
+    .footer-bottom { border-top: 1px solid #1e293b; padding-top: 30px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+    .footer-badges { display: flex; gap: 16px; }
+    .footer-badge { background: #161c2a; border: 1px solid #2d3748; color: #cbd5e1; padding: 4px 12px; border-radius: var(--radius-full); font-size: 0.75rem; }
+
+    .modal-overlay { position: fixed; inset: 0; background: rgba(11, 15, 25, 0.5); backdrop-filter: blur(6px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: var(--transition); }
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+    .modal { background: var(--light-card); border: 1px solid var(--border); width: 100%; max-width: 460px; border-radius: var(--radius-lg); overflow: hidden; }
+    body.dark .modal { background: var(--dark-card); }
+    .modal-header { padding: 24px 24px 16px; display: flex; justify-content: space-between; align-items: center; }
+    .modal-tabs { display: flex; border-bottom: 1px solid var(--border); padding: 0 24px; }
+    .modal-tab { padding: 12px 16px; font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; color: var(--text-muted); cursor: pointer; }
+    .modal-tab.active { color: var(--primary); }
+    .modal-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 16px; right: 16px; height: 2px; background: var(--primary); }
+    .modal-body { padding: 24px; max-height: 75vh; overflow-y: auto; }
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; }
+    .form-input { width: 100%; background: var(--light-bg); border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-md); outline: none; }
+    .field-error { color: #ef4444; font-size: 0.8rem; margin-top: 6px; display: none; }
+    .field-error.show { display: block; }
+
+    .fab-whatsapp { position: fixed; bottom: 24px; right: 24px; height: 52px; width: 52px; background: #25D366; color: white; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.5rem; text-decoration: none; z-index: 80; }
+    .fab-top { position: fixed; bottom: 88px; right: 24px; height: 52px; width: 52px; background: var(--light-card); border: 1px solid var(--border); color: var(--text-main); display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; z-index: 80; opacity: 0; pointer-events: none; }
+    .fab-top.visible { opacity: 1; pointer-events: auto; }
+
+    .toast-container { position: fixed; bottom: 24px; left: 24px; z-index: 1100; display: flex; flex-direction: column; gap: 10px; }
+    .toast { background: var(--light-card); border: 1px solid var(--border); padding: 14px 24px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; }
+
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    @media (max-width: 968px) {
+      .desktop-nav { display: none; }
+      .hamburger { display: flex; }
+      .trust-inner { grid-template-columns: 1fr; gap: 40px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 2.25rem; }
+      .hero-search { flex-direction: column; }
+      .hero-search button { width: 100%; justify-content: center; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="announcement-strip">
+  <span class="dot"></span>
+  <span>Ministry of Education Official Portal &nbsp;|&nbsp; 2027 Admissions Now Open &nbsp;|&nbsp; Apply before 28 Feb 2027</span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-text">
+        <strong>GovSchools Kenya</strong>
+        <span>Ministry of Education Portal</span>
+      </div>
+    </a>
+    <nav class="desktop-nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="search.html">Find Schools</a>
+      <a href="dashboard.html">My Applications</a>
+      <a href="#">Help Centre</a>
+    </nav>
+    <div class="header-actions">
+      <button class="dark-toggle" id="darkToggle"><i class="fa-regular fa-moon"></i></button>
+      <div id="headerAuthButtons">
+        <button class="btn-ghost" onclick="openModal('login')">Login</button>
+        <button class="btn-primary" onclick="openModal('register')">Register Free</button>
+      </div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-panel">
+    <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button>
+    <a href="index.html">Home</a>
+    <a href="search.html">Find Schools</a>
+    <a href="dashboard.html">My Applications</a>
+    <a href="#">Help Centre</a>
+    <div id="mobileAuthPanel"></div>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <i class="fa-solid fa-certificate"></i> Official MoE Admissions Portal &nbsp;·&nbsp; 2027 Cycle Open
+    </div>
+    <h1>Find & Apply to Any<br/><em>Government School</em> in Kenya</h1>
+    <p>Search 8,000+ schools across all 47 counties. Apply online, pay via M-Pesa, and track your child's admission in real time.</p>
+    <div class="hero-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="heroSearch" placeholder="School name, county, or NEMIS code…" />
+      <button onclick="doHeroSearch()">Search Schools <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+    <div class="hero-stats" id="heroStats">
+      <div class="hero-stat"><strong id="totalSchools">0</strong> Verified Schools</div>
+      <span class="hero-stat-sep">·</span>
+      <div class="hero-stat"><strong>47</strong> Counties</div>
+      <span class="hero-stat-sep">·</span>
+      <div class="hero-stat"><strong>240K+</strong> Applications Processed</div>
+    </div>
+  </div>
+</section>
+
+<div class="filter-pills-section">
+  <div class="filter-pills-inner">
+    <span class="filter-pills-label">Browse:</span>
+    <button class="pill active" onclick="filterPill(this,'')"><i class="fa-solid fa-globe-africa"></i> All Schools</button>
+    <button class="pill" onclick="filterPill(this,'Nairobi')"><i class="fa-solid fa-location-dot"></i> Nairobi</button>
+    <button class="pill" onclick="filterPill(this,'Mombasa')"><i class="fa-solid fa-location-dot"></i> Mombasa</button>
+    <button class="pill" onclick="filterPill(this,'Kisumu')"><i class="fa-solid fa-location-dot"></i> Kisumu</button>
+    <button class="pill" onclick="filterPill(this,'Nakuru')"><i class="fa-solid fa-location-dot"></i> Nakuru</button>
+    <button class="pill" onclick="filterPill(this,'National')"><i class="fa-solid fa-award"></i> National Schools</button>
+    <button class="pill" onclick="filterPill(this,'Boys')"><i class="fa-solid fa-mars"></i> Boys</button>
+    <button class="pill" onclick="filterPill(this,'Girls')"><i class="fa-solid fa-venus"></i> Girls</button>
+    <button class="pill" onclick="filterPill(this,'Boarding')"><i class="fa-solid fa-bed"></i> Boarding</button>
+  </div>
+</div>
+
+<section class="steps-section">
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Simple Process</span>
+      <h2 class="section-title">Apply to Any School in 4 Easy Steps</h2>
+      <p class="section-subtitle">No physical queues. Complete your application entirely online.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card"><div class="step-number">01</div><div class="step-icon"><i class="fa-solid fa-magnifying-glass"></i></div><h3>Search & Compare</h3><p>Filter schools by county, level, and performance metrics.</p></div>
+      <div class="step-card"><div class="step-number">02</div><div class="step-icon"><i class="fa-solid fa-file-signature"></i></div><h3>Apply Online</h3><p>Submit your application with required documents.</p></div>
+      <div class="step-card"><div class="step-number">03</div><div class="step-icon"><i class="fa-solid fa-credit-card"></i></div><h3>Process Fee</h3><p>Pay via M-Pesa securely through the portal.</p></div>
+      <div class="step-card"><div class="step-number">04</div><div class="step-icon"><i class="fa-solid fa-envelope-open-text"></i></div><h3>Track Results</h3><p>Monitor your application status in real-time.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="schools-bg">
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Featured National Schools</span>
+      <h2 class="section-title">Top Government Schools — 2027 Admissions Open</h2>
+    </div>
+    <div class="schools-scroll-wrapper" id="featuredSchools"></div>
+    <div style="text-align:center;margin-top:48px">
+      <a href="search.html" class="btn-primary" style="padding:14px 32px; border-radius:var(--radius-full)">
+        <i class="fa-solid fa-school"></i> Browse All Schools
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="trust-section">
+  <div class="trust-inner">
+    <div class="trust-content">
+      <h2>Trusted by Parents Across All 47 Counties</h2>
+      <p>GovSchools Kenya serves as the official centralized administrative channel processing applications for national distribution pathways.</p>
+      <a href="search.html" class="trust-btn"><i class="fa-solid fa-rocket"></i> Start Application Framework</a>
+    </div>
+    <div class="trust-stats">
+      <div class="trust-stat-card"><span class="number" id="statTotal">0</span><span class="label">Verified School Profiles</span></div>
+      <div class="trust-stat-card"><span class="number">47</span><span class="label">Counties Integrated</span></div>
+      <div class="trust-stat-card"><span class="number">240K+</span><span class="label">Annual Intake Actions</span></div>
+      <div class="trust-stat-card"><span class="number">99.9%</span><span class="label">Infrastructure Uptime</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="steps-section">
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Geographic Filters</span>
+      <h2 class="section-title">Browse Schools by County</h2>
+    </div>
+    <div class="counties-grid" id="countiesGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col"><h4>Schools</h4><a href="search.html">Search Schools</a><a href="search.html?cat=National">National Schools</a></div>
+      <div class="footer-col"><h4>Parents</h4><a href="#" onclick="openModal('register')">Create Account</a><a href="dashboard.html">Track Applications</a></div>
+      <div class="footer-col"><h4>Support</h4><a href="#">Help Centre</a><a href="#">Contact MoE</a><a href="#">Privacy Framework</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2027 Ministry of Education, Republic of Kenya.</span><div class="footer-badges"><span class="footer-badge">🔒 HTTPS Secured</span><span class="footer-badge">🇰🇪 Official Portal</span></div></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/254800000000" class="fab-whatsapp" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+<button class="fab-top" id="fabTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fa-solid fa-arrow-up"></i></button>
+
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <div class="modal-header"><h2>Portal Identity Verification</h2><button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="modal-tabs"><div class="modal-tab active" onclick="switchTab('login')">Login</div><div class="modal-tab" onclick="switchTab('register')">Register</div></div>
+    <div class="modal-body">
+      <div id="loginForm">
+        <div class="form-group"><label class="form-label">Phone Number</label><input type="tel" class="form-input" id="loginPhone" placeholder="0712345678"></div>
+        <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="loginPassword"></div>
+        <button class="btn-full" onclick="doLogin()"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+      </div>
+      <div id="registerForm" style="display:none">
+        <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" id="regName"></div>
+        <div class="form-group"><label class="form-label">ID Number</label><input type="text" class="form-input" id="regNatId"></div>
+        <div class="form-group"><label class="form-label">Phone Number</label><input type="tel" class="form-input" id="regPhone"></div>
+        <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="regPass"></div>
+        <button class="btn-full" onclick="doRegister()"><i class="fa-solid fa-user-plus"></i> Register</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/school-data.js"></script>
+<script>
+let allSchools = [];
+
+function loadSchools() {
+  allSchools = window.SCHOOL_DATA.getActiveSchools();
+  renderFeaturedSchools();
+  renderCounties();
+  updateStats();
+}
+
+function renderFeaturedSchools() {
+  const container = document.getElementById('featuredSchools');
+  if(!container) return;
+  
+  const featured = allSchools.slice(0, 6);
+  if(featured.length === 0) {
+    container.innerHTML = '<div style="text-align:center; padding:40px;">Loading schools...</div>';
+    return;
+  }
+  
+  container.innerHTML = featured.map(s => {
+    const pct = Math.round((s.remaining / s.slots) * 100);
+    const barColor = pct > 20 ? 'var(--primary)' : pct > 8 ? '#d97706' : '#ef4444';
+    const urgentClass = s.remaining <= 10 ? 'urgent' : '';
+    const color = s.color || `linear-gradient(135deg,#1a4731,${window.SCHOOL_DATA.getRandomColor()})`;
+    
+    return `
+      <div class="school-card" onclick="window.location.href='school-profile.html?id=${s.id}'">
+        <div class="school-card-header" style="background:${color}">
+          <div class="school-initial">${s.name.charAt(0)}</div>
+          <span class="school-slots-badge ${urgentClass}">${s.remaining} slots open</span>
+        </div>
+        <div class="school-card-body">
+          <h3>${s.name}</h3>
+          <div class="school-card-location"><i class="fa-solid fa-location-dot"></i> ${s.county} County</div>
+          <div class="school-tags">
+            <span class="tag tag-national">${s.category}</span>
+            <span class="tag tag-${s.gender.toLowerCase()}">${s.gender}</span>
+            <span class="tag tag-boarding">${s.boarding}</span>
+          </div>
+          <div class="slots-bar"><div class="slots-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
+          <div class="school-score-row">
+            <div class="score-item"><div class="val">${s.mean2024}</div><div class="lbl">Mean '24</div></div>
+            <div class="score-divider"></div>
+            <div class="score-item"><div class="val">${s.cutoff}</div><div class="lbl">Cutoff</div></div>
+            <div class="score-divider"></div>
+            <div class="score-item"><div class="val" style="color:${s.remaining <= 10 ? '#ef4444' : 'var(--primary)'}">${s.remaining}</div><div class="lbl">Vacant</div></div>
+          </div>
+        </div>
+        <div class="school-card-footer">
+          <button class="btn-apply" onclick="event.stopPropagation();window.location.href='apply.html?school_id=${s.id}'">
+            <i class="fa-solid fa-file-pen"></i> Apply Now
+          </button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderCounties() {
+  const container = document.getElementById('countiesGrid');
+  if(!container) return;
+  
+  const countyStats = window.SCHOOL_DATA.getCountyStats();
+  container.innerHTML = countyStats.slice(0, 12).map(c =>
+    `<a class="county-chip" href="search.html?county=${encodeURIComponent(c.name)}">
+      <div class="county-name">${c.name}</div>
+      <div class="county-schools">${c.schools} Schools</div>
+    </a>`
+  ).join('');
+}
+
+function updateStats() {
+  const stats = window.SCHOOL_DATA.getStats();
+  document.getElementById('totalSchools').innerText = stats.active;
+  document.getElementById('statTotal').innerText = stats.active;
+}
+
+function doHeroSearch() {
+  const q = document.getElementById('heroSearch').value.trim();
+  window.location.href = 'search.html' + (q ? '?q=' + encodeURIComponent(q) : '');
+}
+
+function filterPill(btn, filter) {
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  if (filter) window.location.href = 'search.html?q=' + encodeURIComponent(filter);
+}
+
+// Auth Functions
+function openModal(tab) {
+  document.getElementById('authModal').classList.add('open');
+  switchTab(tab || 'login');
+}
+function closeModal() { document.getElementById('authModal').classList.remove('open'); }
+function switchTab(tab) {
+  document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+}
+
+function doLogin() {
+  const phone = document.getElementById('loginPhone').value.trim();
+  const pass = document.getElementById('loginPassword').value.trim();
+  const users = JSON.parse(localStorage.getItem('govschools_users') || '[]');
+  const user = users.find(u => u.phone === phone && u.password === pass);
+  
+  if(user || (phone === '0712345678' && pass === 'demo1234')) {
+    const session = user || { name: 'Demo User', phone, role: 'parent' };
+    localStorage.setItem('govschools_session', JSON.stringify(session));
+    closeModal();
+    showToast('Login successful!');
+    updateNav();
+  } else {
+    showToast('Invalid credentials', 'error');
+  }
+}
+
+function doRegister() {
+  const name = document.getElementById('regName').value.trim();
+  const natId = document.getElementById('regNatId').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const pass = document.getElementById('regPass').value.trim();
+  
+  if(!name || !natId || !phone || !pass) {
+    showToast('Please fill all fields', 'error');
+    return;
+  }
+  
+  const users = JSON.parse(localStorage.getItem('govschools_users') || '[]');
+  if(users.find(u => u.phone === phone)) {
+    showToast('Phone already registered', 'error');
+    return;
+  }
+  
+  const newUser = { name, national_id: natId, phone, password: pass, role: 'parent', created: new Date().toISOString() };
+  users.push(newUser);
+  localStorage.setItem('govschools_users', JSON.stringify(users));
+  localStorage.setItem('govschools_session', JSON.stringify(newUser));
+  closeModal();
+  showToast('Registration successful!');
+  updateNav();
+}
+
+function updateNav() {
+  const session = JSON.parse(localStorage.getItem('govschools_session') || 'null');
+  const authDiv = document.getElementById('headerAuthButtons');
+  const mobileAuth = document.getElementById('mobileAuthPanel');
+  
+  if(session) {
+    const firstName = session.name.split(' ')[0];
+    authDiv.innerHTML = `<span><i class="fa-solid fa-circle-user"></i> ${firstName}</span><a href="dashboard.html" class="btn-ghost">Dashboard</a><button class="btn-ghost" onclick="doLogout()" style="color:#ef4444;">Logout</button>`;
+    mobileAuth.innerHTML = `<div><strong>${session.name}</strong></div><a href="dashboard.html">Dashboard</a><a href="#" onclick="doLogout()">Logout</a>`;
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem('govschools_session');
+  location.reload();
+}
+
+function showToast(msg, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<span>${msg}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => { toast.remove(); }, 3000);
+}
+
+function toggleDark() {
+  document.body.classList.toggle('dark');
+  localStorage.setItem('govschools_dark', document.body.classList.contains('dark') ? '1' : '0');
+}
+
+// Event Listeners
+document.getElementById('darkToggle').addEventListener('click', toggleDark);
+if(localStorage.getItem('govschools_dark') === '1') document.body.classList.add('dark');
+
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobileNav').classList.add('open');
+});
+document.getElementById('mobileNav').addEventListener('click', (e) => {
+  if(e.target === document.getElementById('mobileNav')) document.getElementById('mobileNav').classList.remove('open');
+});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('fabTop').classList.toggle('visible', window.scrollY > 400);
+});
+
+document.getElementById('heroSearch').addEventListener('keypress', (e) => {
+  if(e.key === 'Enter') doHeroSearch();
+});
+
+// Listen for school updates from admin
+window.addEventListener('schoolsUpdated', () => {
+  loadSchools();
+  showToast('School directory has been updated!', 'success');
+});
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  loadSchools();
+  updateNav();
+});
+</script>
+</body>
+</html>

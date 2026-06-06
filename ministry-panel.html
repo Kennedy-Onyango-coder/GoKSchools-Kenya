@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ministry Oversight Panel — GovSchools Kenya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #006B3F;
+      --primary-light: #129a5f;
+      --secondary: #990000;
+      --dark-bg: #0b0f19;
+      --dark-card: #161c2a;
+      --light-bg: #f8fafc;
+      --light-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--light-bg);
+      color: var(--text-main);
+      transition: var(--transition);
+      line-height: 1.5;
+    }
+    body.dark {
+      background-color: var(--dark-bg);
+      color: #f1f5f9;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    .announcement-strip {
+      background: #111827;
+      color: #f3f4f6;
+      text-align: center;
+      padding: 10px 24px;
+      font-size: 0.85rem;
+      font-family: var(--font-display);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .announcement-strip .dot {
+      height: 8px;
+      width: 8px;
+      background: #ef4444;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    body.dark header { background: rgba(11, 15, 25, 0.8); }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .logo-shield {
+      width: 42px;
+      height: 42px;
+      background: var(--secondary);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+    .logo-text strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+    .logo-text span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: block;
+    }
+    .badge-active {
+      background: #DBEAFE;
+      color: #1E40AF;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: var(--font-display);
+    }
+    body.dark .badge-active {
+      background: #1e3a5f;
+      color: #93c5fd;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .dark-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .dashboard-frame {
+      display: flex;
+      min-height: calc(100vh - 73px);
+    }
+    .sidebar {
+      width: 280px;
+      background: var(--light-card);
+      border-right: 1px solid var(--border);
+      padding: 32px 0;
+      position: sticky;
+      top: 73px;
+      height: calc(100vh - 73px);
+      overflow-y: auto;
+    }
+    body.dark .sidebar {
+      background: var(--dark-card);
+    }
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 24px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-weight: 600;
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+    }
+    .sidebar-link:hover {
+      background: rgba(0, 107, 63, 0.05);
+      color: var(--primary);
+    }
+    body.dark .sidebar-link:hover {
+      background: rgba(18, 154, 95, 0.1);
+    }
+    .sidebar-link.active {
+      background: rgba(0, 107, 63, 0.08);
+      color: var(--primary);
+      border-left-color: var(--primary);
+    }
+    .sidebar-link i {
+      width: 20px;
+      font-size: 1.1rem;
+    }
+
+    .main-viewport {
+      flex: 1;
+      padding: 32px;
+      overflow-x: auto;
+    }
+    .view-header {
+      margin-bottom: 32px;
+    }
+    .view-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .view-header p {
+      color: var(--text-muted);
+    }
+
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .stat-node {
+      background: var(--light-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      transition: var(--transition);
+    }
+    body.dark .stat-node {
+      background: var(--dark-card);
+    }
+    .stat-node .meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .stat-node .qty {
+      font-size: 2rem;
+      font-weight: 800;
+      font-family: var(--font-display);
+      color: var(--primary);
+    }
+
+    .table-surface {
+      background: var(--light-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow-x: auto;
+    }
+    body.dark .table-surface {
+      background: var(--dark-card);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .data-table th,
+    .data-table td {
+      padding: 16px 20px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(0, 0, 0, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-pending { background: #fef3c7; color: #d97706; }
+    body.dark .badge-pending { background: #451a03; color: #fbbf24; }
+    .badge-approved { background: #d1fae5; color: #059669; }
+    body.dark .badge-approved { background: #064e3b; color: #34d399; }
+    .badge-rejected { background: #fee2e2; color: #dc2626; }
+    body.dark .badge-rejected { background: #7f1d1d; color: #fca5a5; }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-secondary:hover { background: rgba(0, 0, 0, 0.04); }
+    body.dark .btn-secondary:hover { background: rgba(255, 255, 255, 0.04); }
+    .action-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    code { background: var(--light-bg); padding: 4px 8px; border-radius: var(--radius-sm); font-family: monospace; font-size: 0.85rem; }
+    body.dark code { background: var(--dark-bg); }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 15, 25, 0.5);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+      padding: 16px;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+    .modal {
+      background: var(--light-card);
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 500px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    body.dark .modal { background: var(--dark-card); }
+    .modal-header {
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-header h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; }
+    .modal-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); }
+    .modal-body { padding: 24px; }
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.85rem; }
+    .form-input, .form-select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--light-bg); color: var(--text-main); }
+    body.dark .form-input, body.dark .form-select { background: var(--dark-bg); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; }
+
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toast {
+      background: var(--light-card);
+      border: 1px solid var(--border);
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideInRight 0.3s ease;
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+    footer {
+      background: #0b0f19;
+      color: #94a3b8;
+      border-top: 1px solid #1e293b;
+      padding: 40px 24px 30px;
+    }
+    .footer-inner { max-width: 1400px; margin: 0 auto; text-align: center; }
+    .footer-badges { display: flex; justify-content: center; gap: 16px; margin-top: 20px; flex-wrap: wrap; }
+    .footer-badge { background: #161c2a; border: 1px solid #2d3748; color: #cbd5e1; padding: 4px 12px; border-radius: var(--radius-full); font-size: 0.75rem; }
+
+    @media (max-width: 768px) {
+      .dashboard-frame { flex-direction: column; }
+      .sidebar { width: 100%; position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 16px; }
+      .sidebar-menu { display: flex; flex-wrap: wrap; gap: 8px; }
+      .sidebar-link { padding: 10px 16px; border-left: none; border-radius: var(--radius-md); }
+      .main-viewport { padding: 20px; }
+      .stats-strip { grid-template-columns: 1fr; }
+      .data-table th, .data-table td { padding: 12px; font-size: 0.85rem; }
+      .action-group { flex-direction: column; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="announcement-strip">
+  <span class="dot"></span>
+  <span>🇰🇪 Ministry of Education - Oversight Panel | TSC Integration Active | Real-time Verification</span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-shield"><i class="fa-solid fa-g"></i></div>
+      <div class="logo-text">
+        <strong>GovSchools HQ</strong>
+        <span>Ministry Oversight Dashboard</span>
+      </div>
+    </a>
+    <span class="badge-active"><i class="fa-solid fa-building-shield"></i> Level 1 Security Clearance</span>
+    <div class="header-actions">
+      <button class="dark-toggle" id="darkToggle"><i class="fa-regular fa-moon"></i></button>
+      <div id="headerAuth">
+        <span id="adminName" style="margin-right: 12px; font-weight: 600;"><i class="fa-solid fa-user-tie"></i> Admin User</span>
+        <button class="btn-ghost" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="dashboard-frame">
+  <aside class="sidebar">
+    <ul class="sidebar-menu">
+      <li><a href="#" class="sidebar-link active" data-tab="verification"><i class="fa-solid fa-clipboard-check"></i> Verification Queue</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="demographics"><i class="fa-solid fa-chart-line"></i> Demographics & Gaps</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="schools"><i class="fa-solid fa-school"></i> School Management</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="registrations"><i class="fa-solid fa-user-plus"></i> School Registrations</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="reports"><i class="fa-solid fa-chart-simple"></i> Analytics Reports</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="tsc"><i class="fa-solid fa-id-card"></i> TSC Integration</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-viewport">
+    <!-- Verification Queue Tab -->
+    <div id="verificationTab">
+      <div class="view-header">
+        <h2><i class="fa-solid fa-clipboard-check"></i> TSC / Institutional Verification Queue</h2>
+        <p>Review school creations, teacher assignments, and transfer updates to control activation states.</p>
+      </div>
+      <div class="stats-strip">
+        <div class="stat-node"><div class="meta">Pending Approvals</div><div class="qty" id="pendingQty">0</div></div>
+        <div class="stat-node"><div class="meta">Deduplicated UPI Locks</div><div class="qty">14,210</div></div>
+        <div class="stat-node"><div class="meta">Verified This Month</div><div class="qty" id="verifiedThisMonth">0</div></div>
+        <div class="stat-node"><div class="meta">Avg. Verification Time</div><div class="qty">2.4 hrs</div></div>
+      </div>
+      <div class="table-surface">
+        <table class="data-table">
+          <thead><tr><th>School Name & Code</th><th>Headteacher</th><th>TSC Registry</th><th>Submission Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="verificationQueueBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Demographics Tab -->
+    <div id="demographicsTab" style="display: none;">
+      <div class="view-header">
+        <h2><i class="fa-solid fa-chart-line"></i> Demographics & Resource Gaps</h2>
+        <p>Nationwide analysis of school distribution, enrollment trends, and resource allocation.</p>
+      </div>
+      <div class="stats-strip">
+        <div class="stat-node"><div class="meta">Total Schools</div><div class="qty" id="totalSchools">0</div></div>
+        <div class="stat-node"><div class="meta">Active Schools</div><div class="qty" id="activeSchools">0</div></div>
+        <div class="stat-node"><div class="meta">Pending Approval</div><div class="qty" id="pendingSchools">0</div></div>
+        <div class="stat-node"><div class="meta">National Schools</div><div class="qty" id="nationalSchools">0</div></div>
+      </div>
+      <div class="table-surface">
+        <table class="data-table"><thead><tr><th>County</th><th>Schools</th><th>Status</th></tr></thead><tbody id="demographicsBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- School Management Tab -->
+    <div id="schoolsTab" style="display: none;">
+      <div class="view-header">
+        <h2><i class="fa-solid fa-school"></i> School Management</h2>
+        <p>Review and manage all registered schools. Approve pending schools to make them visible to applicants.</p>
+        <button class="btn-primary" onclick="openAddSchoolModal()" style="margin-top: 16px;"><i class="fa-solid fa-plus"></i> Add New School</button>
+      </div>
+      <div class="table-surface">
+        <table class="data-table"><thead><tr><th>School Name</th><th>NEMIS Code</th><th>County</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead><tbody id="schoolsListBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- School Registrations Tab (NEW) -->
+    <div id="registrationsTab" style="display: none;">
+      <div class="view-header">
+        <h2><i class="fa-solid fa-user-plus"></i> School Registration Applications</h2>
+        <p>Review school registration requests. Approve to automatically create school profile and principal account.</p>
+      </div>
+      <div class="stats-strip">
+        <div class="stat-node"><div class="meta">Pending Registrations</div><div class="qty" id="pendingRegistrationsQty">0</div></div>
+        <div class="stat-node"><div class="meta">Approved This Month</div><div class="qty" id="approvedThisMonth">0</div></div>
+      </div>
+      <div class="table-surface">
+        <table class="data-table">
+          <thead><tr><th>School Name</th><th>Principal</th><th>TSC Number</th><th>County</th><th>Email/Phone</th><th>Registration Date</th><th>Actions</th></tr></thead>
+          <tbody id="registrationsBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Reports Tab -->
+    <div id="reportsTab" style="display: none;">
+      <div class="view-header">
+        <h2><i class="fa-solid fa-chart-simple"></i> Analytics Reports</h2>
+        <p>Generate and download system-wide reports for auditing and planning.</p>
+      </div>
+      <div class="stats-strip">
+        <div class="stat-node"><div class="meta">Applications (2027)</div><div class="qty">45,289</div></div>
+        <div class="stat-node"><div class="meta">Approved Applications</div><div class="qty">32,456</div></div>
+        <div class="stat-node"><div class="meta">Pending Review</div><div class="qty" id="pendingAppsCount">0</div></div>
+        <div class="stat-node"><div class="meta">Completion Rate</div><div class="qty">71.6%</div></div>
+      </div>
+      <div class="table-surface" style="margin-bottom: 24px;">
+        <div style="padding: 24px;">
+          <h3 style="margin-bottom: 16px;"><i class="fa-solid fa-download"></i> Available Reports</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+            <button class="btn-primary" onclick="generateReport('applications')" style="justify-content: center;"><i class="fa-solid fa-file-alt"></i> Applications Summary</button>
+            <button class="btn-primary" onclick="generateReport('schools')" style="justify-content: center;"><i class="fa-solid fa-school"></i> Schools Directory</button>
+            <button class="btn-primary" onclick="generateReport('admissions')" style="justify-content: center;"><i class="fa-solid fa-user-graduate"></i> Admissions Report</button>
+            <button class="btn-primary" onclick="generateReport('financial')" style="justify-content: center;"><i class="fa-solid fa-coins"></i> Financial Summary</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TSC Integration Tab -->
+    <div id="tscTab" style="display: none;">
+      <div class="view-header">
+        <h2><i class="fa-solid fa-id-card"></i> TSC Integration Hub</h2>
+        <p>Sync and verify teacher credentials with the Teachers Service Commission database.</p>
+      </div>
+      <div class="stats-strip">
+        <div class="stat-node"><div class="meta">Teachers Registered</div><div class="qty">342,890</div></div>
+        <div class="stat-node"><div class="meta">Pending Verification</div><div class="qty" id="pendingTeachersCount">0</div></div>
+        <div class="stat-node"><div class="meta">Verified This Week</div><div class="qty">1,234</div></div>
+      </div>
+      <div class="table-surface">
+        <table class="data-table"><thead><tr><th>TSC Number</th><th>Teacher Name</th><th>School</th><th>Status</th><th>Last Sync</th><th>Action</th></tr></thead><tbody id="tscTeachersBody"></tbody></table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>© 2027 Ministry of Education, Republic of Kenya. All rights reserved.</p>
+    <div class="footer-badges">
+      <span class="footer-badge">🔒 Classified - Official Use Only</span>
+      <span class="footer-badge">🇰🇪 Government of Kenya</span>
+      <span class="footer-badge">✅ TSC Integrated</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Add School Modal -->
+<div class="modal-overlay" id="addSchoolModal">
+  <div class="modal">
+    <div class="modal-header"><h3><i class="fa-solid fa-plus"></i> Add New School</h3><button class="modal-close" onclick="closeAddSchoolModal()"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">School Name *</label><input type="text" class="form-input" id="newSchoolName"></div>
+      <div class="form-group"><label class="form-label">NEMIS Code *</label><input type="text" class="form-input" id="newSchoolNemisi"></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">County *</label><select class="form-select" id="newSchoolCounty"><option value="">Select County</option></select></div>
+      <div class="form-group"><label class="form-label">Category *</label><select class="form-select" id="newSchoolCategory"><option value="National">National</option><option value="ExtraCounty">Extra-County</option><option value="County">County</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Level *</label><select class="form-select" id="newSchoolLevel"><option value="Primary">Primary</option><option value="JSS">JSS</option><option value="Senior">Senior</option></select></div>
+      <div class="form-group"><label class="form-label">Gender *</label><select class="form-select" id="newSchoolGender"><option value="Boys">Boys</option><option value="Girls">Girls</option><option value="Mixed">Mixed</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Boarding *</label><select class="form-select" id="newSchoolBoarding"><option value="Boarding">Boarding</option><option value="Day">Day</option><option value="Both">Both</option></select></div>
+      <div class="form-group"><label class="form-label">Principal</label><input type="text" class="form-input" id="newSchoolPrincipal"></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Total Capacity</label><input type="number" class="form-input" id="newSchoolCapacity"></div>
+      <div class="form-group"><label class="form-label">Cutoff Marks</label><input type="number" class="form-input" id="newSchoolCutoff"></div></div>
+    </div>
+    <div class="modal-footer"><button class="btn-secondary" onclick="closeAddSchoolModal()">Cancel</button><button class="btn-primary" onclick="addNewSchool()"><i class="fa-solid fa-save"></i> Save School</button></div>
+  </div>
+</div>
+
+<!-- View Details Modal -->
+<div class="modal-overlay" id="viewModal">
+  <div class="modal"><div class="modal-header"><h3 id="viewModalTitle">School Details</h3><button class="modal-close" onclick="closeViewModal()"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="modal-body" id="viewModalBody"></div><div class="modal-footer"><button class="btn-secondary" onclick="closeViewModal()">Close</button></div></div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/school-data.js"></script>
+<script>
+// Data Stores
+let verificationQueue = [];
+let tscTeachers = [];
+let verifiedCount = 0;
+let allSchools = [];
+
+const counties = ["Nairobi","Kiambu","Mombasa","Kisumu","Nakuru","Machakos","Murang'a","Nyeri","Kirinyaga","Nyandarua","Laikipia","Meru","Embu","Kitui","Makueni","Kajiado","Narok","Bomet","Kericho","Uasin Gishu","Nandi","Trans Nzoia","Bungoma","Kakamega","Busia","Siaya","Kisii","Nyamira","Migori","Homa Bay","Kwale","Kilifi","Tana River","Lamu","Taita-Taveta","Garissa","Wajir","Mandera","Turkana","Marsabit","Isiolo","Samburu","Elgeyo-Marakwet","Baringo","West Pokot"];
+
+const demographicsData = [
+  { county: "Nairobi", schools: 342, gap: "Optimal" }, { county: "Kiambu", schools: 287, gap: "Moderate" },
+  { county: "Mombasa", schools: 198, gap: "Moderate" }, { county: "Kisumu", schools: 165, gap: "Critical" },
+  { county: "Nakuru", schools: 241, gap: "Critical" }, { county: "Machakos", schools: 189, gap: "Critical" }
+];
+
+function init() {
+  loadSchools();
+  loadVerificationQueue();
+  loadPendingRegistrations();
+  updateCounts();
+  populateDemographics();
+  populateTSCList();
+  populateCountySelect();
+  checkAdminSession();
+}
+
+function loadSchools() {
+  allSchools = window.SCHOOL_DATA.getAllSchools();
+  populateSchoolsList();
+  updateSchoolStats();
+}
+
+function loadVerificationQueue() {
+  verificationQueue = window.SCHOOL_DATA.getVerificationQueue();
+  const tbody = document.getElementById('verificationQueueBody');
+  if (!tbody) return;
+  const pendingItems = verificationQueue.filter(item => item.status === 'pending');
+  tbody.innerHTML = pendingItems.map(item => `<tr><td><strong>${escapeHtml(item.schoolName)}</strong><br><small>Code: ${item.schoolCode}</small></td><td>${escapeHtml(item.headteacher) || 'Pending'}</td><td><code>${item.tscId}</code></td><td>${item.submissionDate}</td><td><span class="badge badge-pending"><i class="fa-solid fa-clock"></i> Awaiting Verification</span></td><td><div class="action-group"><button class="btn-primary" onclick="approveSchool(${item.id})"><i class="fa-solid fa-check-circle"></i> Approve</button><button class="btn-secondary" onclick="viewSchoolDetails(${item.id})"><i class="fa-solid fa-eye"></i> View</button><button class="btn-secondary" onclick="rejectSchool(${item.id})" style="border-color:#dc2626; color:#dc2626;"><i class="fa-solid fa-times-circle"></i> Reject</button></div></td></tr>`).join('');
+  document.getElementById('pendingQty').innerText = pendingItems.length;
+}
+
+function loadPendingRegistrations() {
+  const pendingRegs = JSON.parse(localStorage.getItem('govschools_pending_registrations') || '[]');
+  const pending = pendingRegs.filter(r => r.status === 'pending');
+  document.getElementById('pendingRegistrationsQty').innerText = pending.length;
+  document.getElementById('approvedThisMonth').innerText = pendingRegs.filter(r => r.status === 'approved' && new Date(r.registrationDate).getMonth() === new Date().getMonth()).length;
+  
+  const tbody = document.getElementById('registrationsBody');
+  if (!tbody) return;
+  tbody.innerHTML = pending.map(reg => `<tr><td><strong>${escapeHtml(reg.schoolName)}</strong></td><td>${escapeHtml(reg.principalName)}</td><td><code>${reg.tscNumber}</code></td><td>${reg.county}</td><td>${reg.email}<br><small>${reg.phone}</small></td><td>${new Date(reg.registrationDate).toLocaleDateString()}</td><td><div class="action-group"><button class="btn-primary" onclick="approveSchoolRegistration(${reg.id})"><i class="fa-solid fa-check"></i> Approve & Send Credentials</button><button class="btn-secondary" onclick="rejectSchoolRegistration(${reg.id})" style="border-color:#dc2626;"><i class="fa-solid fa-times"></i> Reject</button></div></td></tr>`).join('');
+}
+
+function approveSchoolRegistration(id) {
+  const pendingRegs = JSON.parse(localStorage.getItem('govschools_pending_registrations') || '[]');
+  const registration = pendingRegs.find(r => r.id === id);
+  if (registration && registration.status === 'pending') {
+    registration.status = 'approved';
+    registration.approvedDate = new Date().toISOString();
+    localStorage.setItem('govschools_pending_registrations', JSON.stringify(pendingRegs));
+    
+    // Create school in main database
+    const newSchool = {
+      id: Date.now(),
+      name: registration.schoolName,
+      nemis: registration.nemis,
+      county: registration.county,
+      category: registration.category,
+      level: registration.level,
+      gender: registration.gender,
+      boarding: registration.boarding,
+      principal: registration.principalName,
+      slots: registration.capacity,
+      remaining: registration.capacity,
+      cutoff: registration.cutoff || 350,
+      mean2024: registration.mean2024 || 370,
+      status: 'active',
+      color: `linear-gradient(135deg,#1a4731,${window.SCHOOL_DATA.getRandomColor()})`,
+      established: new Date().getFullYear(),
+      motto: 'Strive for Excellence',
+      createdAt: new Date().toISOString()
+    };
+    window.SCHOOL_DATA.addSchool(newSchool);
+    
+    // Create user account for principal
+    const users = JSON.parse(localStorage.getItem('govschools_users') || '[]');
+    const tempPassword = registration.tempPassword || `Sch${Math.floor(Math.random() * 10000)}@2027`;
+    const newUser = {
+      id: Date.now(),
+      name: registration.principalName,
+      phone: registration.phone,
+      email: registration.email,
+      password: tempPassword,
+      role: 'principal',
+      schoolId: newSchool.id,
+      schoolName: registration.schoolName,
+      tscNumber: registration.tscNumber,
+      mustChangePassword: true,
+      created: new Date().toISOString()
+    };
+    users.push(newUser);
+    localStorage.setItem('govschools_users', JSON.stringify(users));
+    
+    // Send simulated notification
+    showToast(`✅ ${registration.schoolName} approved! Credentials sent to ${registration.email}. Temp Password: ${tempPassword}`, 'success');
+    
+    // Update all views
+    loadSchools();
+    loadVerificationQueue();
+    loadPendingRegistrations();
+    addSystemLog(`Approved school registration: ${registration.schoolName} (${registration.nemis})`);
+  }
+}
+
+function rejectSchoolRegistration(id) {
+  if (confirm('Reject this school registration? They will be notified.')) {
+    const pendingRegs = JSON.parse(localStorage.getItem('govschools_pending_registrations') || '[]');
+    const registration = pendingRegs.find(r => r.id === id);
+    if (registration) {
+      registration.status = 'rejected';
+      registration.rejectedDate = new Date().toISOString();
+      localStorage.setItem('govschools_pending_registrations', JSON.stringify(pendingRegs));
+      loadPendingRegistrations();
+      showToast(`❌ Registration for ${registration.schoolName} has been rejected.`, 'warning');
+      addSystemLog(`Rejected school registration: ${registration.schoolName}`);
+    }
+  }
+}
+
+function populateSchoolsList() {
+  const tbody = document.getElementById('schoolsListBody');
+  if (!tbody) return;
+  tbody.innerHTML = allSchools.map(school => `<td><strong>${escapeHtml(school.name)}</strong></td><td><code>${school.nemis}</code></td><td>${school.county}</td><td>${school.category || 'N/A'}</td><td><span class="badge ${school.status === 'active' ? 'badge-approved' : (school.status === 'pending' ? 'badge-pending' : 'badge-rejected')}">${school.status}</span><td><div class="action-group">${school.status === 'pending' ? `<button class="btn-approve" onclick="approveSchool(${school.id})"><i class="fa-solid fa-check"></i> Approve</button>` : ''}<button class="btn-secondary" onclick="toggleSchoolStatus(${school.id})" style="border-color:#dc2626; color:#dc2626;"><i class="fa-solid fa-${school.status === 'active' ? 'ban' : 'check-circle'}"></i> ${school.status === 'active' ? 'Deactivate' : 'Activate'}</button><button class="btn-delete" onclick="deleteSchool(${school.id})"><i class="fa-solid fa-trash"></i> Delete</button></div></td>`).join('');
+}
+
+function approveSchool(id) {
+  const result = window.SCHOOL_DATA.approveSchool(id);
+  if (result) { loadSchools(); loadVerificationQueue(); addSystemLog(`Approved school ID: ${id}`); showToast(`✅ School approved!`, 'success'); }
+}
+
+function rejectSchool(id) {
+  if (confirm('Reject this school?')) { window.SCHOOL_DATA.deleteSchool(id); loadSchools(); loadVerificationQueue(); showToast(`❌ School rejected.`, 'warning'); }
+}
+
+function deleteSchool(id) {
+  const school = allSchools.find(s => s.id === id);
+  if (confirm(`⚠️ Permanently delete "${school?.name}"?`)) { window.SCHOOL_DATA.deleteSchool(id); loadSchools(); loadVerificationQueue(); showToast(`School deleted.`, 'warning'); }
+}
+
+function toggleSchoolStatus(id) {
+  const school = allSchools.find(s => s.id === id);
+  if (school) {
+    const newStatus = school.status === 'active' ? 'inactive' : 'active';
+    window.SCHOOL_DATA.updateSchool(id, { status: newStatus });
+    loadSchools();
+    showToast(`School status updated to ${newStatus}.`, 'success');
+  }
+}
+
+function viewSchoolDetails(id) {
+  const school = allSchools.find(s => s.id === id);
+  if (!school) return;
+  document.getElementById('viewModalBody').innerHTML = `<p><strong>School Name:</strong> ${escapeHtml(school.name)}</p><p><strong>NEMIS Code:</strong> ${school.nemis}</p><p><strong>County:</strong> ${school.county}</p><p><strong>Category:</strong> ${school.category}</p><p><strong>Principal:</strong> ${escapeHtml(school.principal) || 'Pending'}</p><p><strong>Status:</strong> <span class="badge ${school.status === 'active' ? 'badge-approved' : 'badge-pending'}">${school.status}</span></p>`;
+  document.getElementById('viewModalTitle').innerText = `School Details - ${school.name}`;
+  document.getElementById('viewModal').classList.add('open');
+}
+function closeViewModal() { document.getElementById('viewModal').classList.remove('open'); }
+
+function populateDemographics() {
+  const tbody = document.getElementById('demographicsBody');
+  if (tbody) tbody.innerHTML = demographicsData.map(d => `<tr><td><strong>${d.county}</strong></td><td>${d.schools}</td><td><span class="badge ${d.gap === 'Critical' ? 'badge-rejected' : (d.gap === 'Moderate' ? 'badge-pending' : 'badge-approved')}">${d.gap}</span></td>`).join('');
+}
+
+function populateTSCList() {
+  tscTeachers = [{ tscNumber: "TSC-7741092", name: "Dr. Ezekiel Kemboi", school: "Nairobi School", status: "pending", lastSync: "2027-01-15" }];
+  const tbody = document.getElementById('tscTeachersBody');
+  if (tbody) tbody.innerHTML = tscTeachers.map(t => `<td><code>${t.tscNumber}</code></td><td>${t.name}</td><td>${t.school}</td><td><span class="badge badge-pending">Pending</span><td>${t.lastSync}<td><button class="btn-primary" onclick="verifyTeacher('${t.tscNumber}')"><i class="fa-solid fa-check"></i> Verify</button></td>`).join('');
+}
+function verifyTeacher(tscNumber) { showToast(`✅ Teacher verified with TSC database.`, 'success'); }
+
+function populateCountySelect() {
+  const select = document.getElementById('newSchoolCounty');
+  if (select) counties.forEach(c => { const opt = document.createElement('option'); opt.value = c; opt.textContent = c; select.appendChild(opt); });
+}
+function openAddSchoolModal() { document.getElementById('addSchoolModal').classList.add('open'); }
+function closeAddSchoolModal() { document.getElementById('addSchoolModal').classList.remove('open'); }
+
+function addNewSchool() {
+  const name = document.getElementById('newSchoolName').value.trim();
+  const nemis = document.getElementById('newSchoolNemisi').value.trim().toUpperCase();
+  const county = document.getElementById('newSchoolCounty').value;
+  if (!name || !nemis || !county) { showToast('Please fill required fields', 'error'); return; }
+  const newSchool = { name, nemis, county, category: document.getElementById('newSchoolCategory').value, level: document.getElementById('newSchoolLevel').value, gender: document.getElementById('newSchoolGender').value, boarding: document.getElementById('newSchoolBoarding').value, principal: document.getElementById('newSchoolPrincipal').value || 'Pending', slots: parseInt(document.getElementById('newSchoolCapacity').value) || 200, remaining: parseInt(document.getElementById('newSchoolCapacity').value) || 200, cutoff: parseInt(document.getElementById('newSchoolCutoff').value) || 350, status: 'pending', color: `linear-gradient(135deg,#1a4731,${window.SCHOOL_DATA.getRandomColor()})` };
+  window.SCHOOL_DATA.addSchool(newSchool);
+  closeAddSchoolModal(); loadSchools(); loadVerificationQueue();
+  showToast(`✅ ${name} added and pending approval.`, 'success');
+}
+
+function updateSchoolStats() {
+  const stats = window.SCHOOL_DATA.getStats();
+  document.getElementById('totalSchools').innerText = stats.total;
+  document.getElementById('activeSchools').innerText = stats.active;
+  document.getElementById('pendingSchools').innerText = stats.pending;
+  document.getElementById('nationalSchools').innerText = stats.national;
+}
+function updateCounts() {
+  document.getElementById('verifiedThisMonth').innerText = verifiedCount;
+  document.getElementById('pendingTeachersCount').innerText = tscTeachers.filter(t => t.status === 'pending').length;
+  document.getElementById('pendingAppsCount').innerText = JSON.parse(localStorage.getItem('govschools_applications') || '[]').filter(a => a.status === 'pending').length;
+}
+function addSystemLog(action) { const logs = JSON.parse(localStorage.getItem('govschools_logs') || '[]'); logs.unshift({ timestamp: new Date().toLocaleString(), user: 'ministry', action: action, ip: '127.0.0.1' }); localStorage.setItem('govschools_logs', JSON.stringify(logs.slice(0, 200))); }
+function generateReport(type) { const blob = new Blob([`${type.toUpperCase()} Report\nGenerated: ${new Date().toLocaleString()}`], { type: 'text/plain' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `govschools_${type}_report.txt`; a.click(); URL.revokeObjectURL(a.href); showToast(`📄 ${type} report downloaded.`, 'success'); }
+function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+function showToast(msg, type) { const c = document.getElementById('toastContainer'); const t = document.createElement('div'); t.className = 'toast'; const i = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; const col = type === 'success' ? '#10b981' : '#ef4444'; t.innerHTML = `<i class="fa-solid ${i}" style="color:${col}"></i> ${msg}`; c.appendChild(t); setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 4000); }
+function switchTab(tabId) {
+  document.querySelectorAll('[data-tab]').forEach(l => l.classList.remove('active'));
+  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+  ['verification', 'demographics', 'schools', 'registrations', 'reports', 'tsc'].forEach(t => { const el = document.getElementById(`${t}Tab`); if (el) el.style.display = t === tabId ? 'block' : 'none'; });
+  if (tabId === 'registrations') loadPendingRegistrations();
+  if (tabId === 'schools') loadSchools();
+}
+function checkAdminSession() { document.getElementById('adminName').innerHTML = `<i class="fa-solid fa-user-tie"></i> Ministry Official`; }
+function logout() { localStorage.removeItem('govschools_session'); window.location.href = 'access-gateway.html'; }
+function toggleDark() { document.body.classList.toggle('dark'); localStorage.setItem('govschools_dark', document.body.classList.contains('dark') ? '1' : '0'); }
+document.getElementById('darkToggle')?.addEventListener('click', toggleDark);
+if (localStorage.getItem('govschools_dark') === '1') document.body.classList.add('dark');
+document.querySelectorAll('[data-tab]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); switchTab(link.getAttribute('data-tab')); }));
+window.addEventListener('schoolsUpdated', () => { loadSchools(); loadVerificationQueue(); });
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

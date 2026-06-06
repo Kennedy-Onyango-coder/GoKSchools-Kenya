@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Applications - GovSchools Kenya</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #006B3F;
+      --primary-light: #129a5f;
+      --secondary: #990000;
+      --dark-bg: #0b0f19;
+      --dark-card: #161c2a;
+      --light-bg: #f8fafc;
+      --light-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --transition: all 0.3s ease;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--light-bg);
+      color: var(--text-main);
+      transition: var(--transition);
+    }
+    body.dark {
+      background-color: var(--dark-bg);
+      color: #f1f5f9;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+    .section { max-width: 1280px; margin: 0 auto; padding: 60px 24px; }
+    .btn-primary, .btn-ghost {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+    /* Header styles same as index.html */
+    header {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    body.dark header { background: rgba(11, 15, 25, 0.8); }
+    .header-inner { max-width: 1280px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; }
+    .logo-text strong { display: block; font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; }
+    .logo-text span { font-size: 0.8rem; color: var(--text-muted); }
+    .desktop-nav { display: flex; gap: 32px; }
+    .desktop-nav a { text-decoration: none; color: var(--text-muted); font-weight: 600; transition: var(--transition); }
+    .desktop-nav a:hover, .desktop-nav a.active { color: var(--primary); }
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .dark-toggle { background: transparent; border: 1px solid var(--border); color: var(--text-main); width: 40px; height: 40px; border-radius: var(--radius-md); cursor: pointer; }
+    .hamburger { display: none; flex-direction: column; gap: 6px; background: none; border: none; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text-main); }
+
+    /* Dashboard specific */
+    .dashboard-header {
+      background: linear-gradient(135deg, #006B3F 0%, #004d2e 100%);
+      padding: 48px 24px;
+      color: white;
+    }
+    .dashboard-header h1 { font-size: 2rem; margin-bottom: 8px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 48px; }
+    .stat-card { background: var(--light-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; text-align: center; transition: var(--transition); }
+    body.dark .stat-card { background: var(--dark-card); }
+    .stat-card .number { font-size: 2.5rem; font-weight: 800; color: var(--primary); font-family: var(--font-display); }
+    .stat-card .label { color: var(--text-muted); margin-top: 8px; }
+
+    .applications-list { background: var(--light-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    body.dark .applications-list { background: var(--dark-card); }
+    .app-item { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .app-item:last-child { border-bottom: none; }
+    .app-info h3 { font-size: 1.2rem; margin-bottom: 8px; }
+    .app-info p { color: var(--text-muted); font-size: 0.85rem; margin: 4px 0; }
+    .status-badge { padding: 6px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; }
+    .status-pending { background: #fef3c7; color: #d97706; }
+    .status-approved { background: #d1fae5; color: #059669; }
+    .status-rejected { background: #fee2e2; color: #dc2626; }
+    body.dark .status-pending { background: #78350f; color: #fbbf24; }
+    body.dark .status-approved { background: #064e3b; color: #34d399; }
+    body.dark .status-rejected { background: #7f1d1d; color: #fca5a5; }
+
+    .empty-state { text-align: center; padding: 60px; color: var(--text-muted); }
+    .empty-state i { font-size: 4rem; margin-bottom: 16px; }
+
+    /* Footer */
+    footer { background: #0b0f19; color: #94a3b8; padding: 60px 24px 30px; margin-top: 60px; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 48px; margin-bottom: 40px; }
+    .footer-col h4 { color: white; margin-bottom: 20px; }
+    .footer-col a { display: block; color: #94a3b8; text-decoration: none; margin-bottom: 10px; font-size: 0.85rem; }
+    .footer-col a:hover { color: var(--primary-light); }
+    .footer-bottom { border-top: 1px solid #1e293b; padding-top: 30px; display: flex; justify-content: space-between; flex-wrap: wrap; }
+
+    @media (max-width: 768px) {
+      .desktop-nav { display: none; }
+      .hamburger { display: flex; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+      .app-item { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="announcement-strip" style="background:#111827; color:#f3f4f6; text-align:center; padding:10px; font-size:0.85rem;">
+  <span>🇰🇪 Ministry of Education Official Portal | Track your applications in real-time</span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-text"><strong>GovSchools Kenya</strong><span>Ministry of Education Portal</span></div>
+    </a>
+    <nav class="desktop-nav">
+      <a href="index.html">Home</a>
+      <a href="search.html">Find Schools</a>
+      <a href="dashboard.html" class="active">My Applications</a>
+      <a href="#">Help Centre</a>
+    </nav>
+    <div class="header-actions">
+      <button class="dark-toggle" id="darkToggle"><i class="fa-regular fa-moon"></i></button>
+      <div id="headerAuthButtons" style="display:flex; gap:12px;"></div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="dashboard-header">
+  <div class="section" style="padding:0">
+    <h1><i class="fa-solid fa-folder-open"></i> My Application Dashboard</h1>
+    <p>Track the status of all your school applications</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="stats-grid" id="statsGrid"></div>
+  <h2 style="margin-bottom: 24px;"><i class="fa-solid fa-list-check"></i> Your Applications</h2>
+  <div class="applications-list" id="applicationsList"></div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="logo-text"><strong style="color:white">GovSchools Kenya</strong><span style="color:#64748b">Ministry of Education Portal</span></div><p style="margin-top:16px">Official interactive portal for verified registration procedures.</p></div>
+      <div class="footer-col"><h4>Quick Links</h4><a href="search.html">Find Schools</a><a href="dashboard.html">My Applications</a><a href="#">Help Centre</a></div>
+      <div class="footer-col"><h4>Support</h4><a href="#">Contact MoE</a><a href="#">Privacy Framework</a><a href="#">Terms of Use</a></div>
+      <div class="footer-col"><h4>Resources</h4><a href="#">Admission Guidelines</a><a href="#">Fee Structure</a><a href="#">NEMIS Portal</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2027 Ministry of Education, Republic of Kenya.</span><div class="footer-badges"><span>🔒 Secured</span><span>🇰🇪 Official</span></div></div>
+  </div>
+</footer>
+
+<script>
+// School data for reference
+const SCHOOLS = {
+  1: { name: 'Nairobi School', county: 'Nairobi' },
+  2: { name: 'Alliance High School', county: 'Kiambu' },
+  3: { name: 'Kenya High School', county: 'Nairobi' },
+  4: { name: 'Starehe Boys Centre', county: 'Nairobi' },
+  5: { name: 'Moi Girls School', county: 'Nairobi' },
+  6: { name: 'Mangu High School', county: 'Kiambu' }
+};
+
+// Load applications from localStorage
+function getApplications() {
+  const session = JSON.parse(localStorage.getItem('govschools_session') || 'null');
+  if(!session) return [];
+  const allApps = JSON.parse(localStorage.getItem('govschools_applications') || '[]');
+  return allApps.filter(app => app.userPhone === session.phone);
+}
+
+function saveApplication(app) {
+  const allApps = JSON.parse(localStorage.getItem('govschools_applications') || '[]');
+  allApps.push(app);
+  localStorage.setItem('govschools_applications', JSON.stringify(allApps));
+}
+
+function renderDashboard() {
+  const session = JSON.parse(localStorage.getItem('govschools_session') || 'null');
+  const authDiv = document.getElementById('headerAuthButtons');
+  
+  if(!session) {
+    if(authDiv) authDiv.innerHTML = `<button class="btn-ghost" onclick="window.location.href='index.html'">Login</button><button class="btn-primary" onclick="window.location.href='index.html'">Register</button>`;
+    document.getElementById('statsGrid').innerHTML = '';
+    document.getElementById('applicationsList').innerHTML = `<div class="empty-state"><i class="fa-solid fa-lock"></i><h3>Please Login to View Your Applications</h3><p>You need to be logged in to access your dashboard.</p><button class="btn-primary" onclick="window.location.href='index.html'" style="margin-top:20px"><i class="fa-solid fa-right-to-bracket"></i> Login Now</button></div>`;
+    return;
+  }
+  
+  if(authDiv) authDiv.innerHTML = `<span style="font-size:0.85rem; font-weight:700;"><i class="fa-solid fa-circle-user"></i> ${session.name.split(' ')[0]}</span><a href="dashboard.html" class="btn-ghost" style="padding:8px 12px;">Dashboard</a><button class="btn-ghost" onclick="doLogout()" style="color:#ef4444;">Sign Out</button>`;
+  
+  const applications = getApplications();
+  const pending = applications.filter(a => a.status === 'pending').length;
+  const approved = applications.filter(a => a.status === 'approved').length;
+  const rejected = applications.filter(a => a.status === 'rejected').length;
+  
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="number">${applications.length}</div><div class="label">Total Applications</div></div>
+    <div class="stat-card"><div class="number" style="color:#d97706">${pending}</div><div class="label">Under Review</div></div>
+    <div class="stat-card"><div class="number" style="color:#059669">${approved}</div><div class="label">Approved</div></div>
+    <div class="stat-card"><div class="number" style="color:#dc2626">${rejected}</div><div class="label">Not Selected</div></div>
+  `;
+  
+  if(applications.length === 0) {
+    document.getElementById('applicationsList').innerHTML = `<div class="empty-state"><i class="fa-solid fa-inbox"></i><h3>No Applications Yet</h3><p>You haven't submitted any school applications. Start exploring schools now!</p><a href="search.html" class="btn-primary" style="margin-top:20px; display:inline-flex;"><i class="fa-solid fa-magnifying-glass"></i> Find Schools</a></div>`;
+    return;
+  }
+  
+  document.getElementById('applicationsList').innerHTML = applications.map(app => {
+    const school = SCHOOLS[app.schoolId] || { name: `School #${app.schoolId}`, county: 'Unknown' };
+    const statusClass = app.status === 'pending' ? 'status-pending' : (app.status === 'approved' ? 'status-approved' : 'status-rejected');
+    const statusText = app.status === 'pending' ? 'Under Review' : (app.status === 'approved' ? 'Approved' : 'Not Selected');
+    return `
+      <div class="app-item">
+        <div class="app-info">
+          <h3><i class="fa-solid fa-school"></i> ${school.name}</h3>
+          <p><i class="fa-solid fa-location-dot"></i> ${school.county} County</p>
+          <p><i class="fa-regular fa-calendar"></i> Applied: ${new Date(app.applicationDate).toLocaleDateString()}</p>
+          <p><i class="fa-solid fa-hashtag"></i> Reference: ${app.referenceNumber}</p>
+        </div>
+        <div>
+          <span class="status-badge ${statusClass}">${statusText}</span>
+          ${app.status === 'approved' ? `<button class="btn-primary" style="margin-top:12px; padding:8px 16px; font-size:0.8rem;" onclick="downloadLetter('${app.referenceNumber}')"><i class="fa-solid fa-download"></i> Admission Letter</button>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function doLogout() {
+  localStorage.removeItem('govschools_session');
+  window.location.href = 'index.html';
+}
+
+function downloadLetter(ref) {
+  alert(`Admission letter for reference ${ref} would be downloaded here.\n\nThis feature integrates with the Ministry's document management system.`);
+}
+
+function toggleDark() {
+  document.body.classList.toggle('dark');
+  localStorage.setItem('govschools_dark', document.body.classList.contains('dark') ? '1' : '0');
+}
+
+// Dark mode and mobile menu
+document.getElementById('darkToggle')?.addEventListener('click', toggleDark);
+if(localStorage.getItem('govschools_dark') === '1') document.body.classList.add('dark');
+document.getElementById('hamburger')?.addEventListener('click', () => document.getElementById('mobileNav')?.classList.toggle('open'));
+
+document.addEventListener('DOMContentLoaded', renderDashboard);
+</script>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav" style="position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter:blur(4px); z-index:999; opacity:0; pointer-events:none; transition:0.3s;">
+  <div class="mobile-nav-panel" style="position:fixed; top:0; right:-280px; bottom:0; width:280px; background:var(--light-card); padding:24px; transition:0.3s;">
+    <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" style="background:none; border:none; font-size:1.5rem; margin-bottom:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+    <a href="index.html" style="display:block; padding:12px 0; text-decoration:none; color:var(--text-main);"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="search.html" style="display:block; padding:12px 0; text-decoration:none; color:var(--text-main);"><i class="fa-solid fa-magnifying-glass"></i> Find Schools</a>
+    <a href="dashboard.html" style="display:block; padding:12px 0; text-decoration:none; color:var(--text-main);"><i class="fa-solid fa-folder-open"></i> My Applications</a>
+    <a href="#" style="display:block; padding:12px 0; text-decoration:none; color:var(--text-main);"><i class="fa-solid fa-circle-question"></i> Help Centre</a>
+  </div>
+</div>
+<script>
+  document.getElementById('mobileNav')?.addEventListener('click', (e) => { if(e.target === document.getElementById('mobileNav')) document.getElementById('mobileNav')?.classList.remove('open'); });
+</script>
+</body>
+</html>

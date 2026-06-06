@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Profile - GovSchools Kenya</title>
+  <meta name="description" content="View detailed information about government schools in Kenya, including performance metrics, available slots, and application status." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #006B3F;
+      --primary-light: #129a5f;
+      --primary-dark: #004d2e;
+      --secondary: #990000;
+      --secondary-light: #cc0000;
+      --dark-bg: #0b0f19;
+      --dark-card: #161c2a;
+      --light-bg: #f8fafc;
+      --light-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      family: var(--font-sans);
+      background-color: var(--light-bg);
+      color: var(--text-main);
+      transition: var(--transition);
+      line-height: 1.6;
+    }
+    body.dark {
+      background-color: var(--dark-bg);
+      color: #f1f5f9;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    /* Announcement Strip */
+    .announcement-strip {
+      background: #111827;
+      color: #f3f4f6;
+      text-align: center;
+      padding: 8px 24px;
+      font-size: 0.8rem;
+      font-family: var(--font-display);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .announcement-strip .dot {
+      height: 8px;
+      width: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+
+    /* Header */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid var(--primary);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: var(--transition);
+    }
+    body.dark header {
+      background: rgba(11, 15, 25, 0.95);
+    }
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .logo-shield {
+      width: 42px;
+      height: 42px;
+      background: var(--primary);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.3rem;
+    }
+    .logo-text strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+    .logo-text span {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: block;
+    }
+    .desktop-nav {
+      display: flex;
+      gap: 32px;
+    }
+    .desktop-nav a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+    .desktop-nav a:hover, .desktop-nav a.active {
+      color: var(--primary);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .dark-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-ghost:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+    body.dark .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .hamburger span {
+      width: 24px;
+      height: 2px;
+      background: var(--text-main);
+      border-radius: 2px;
+    }
+
+    /* Mobile Nav */
+    .mobile-nav {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+    }
+    .mobile-nav.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .mobile-nav-panel {
+      position: fixed;
+      top: 0;
+      right: -280px;
+      bottom: 0;
+      width: 280px;
+      background: var(--light-card);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: var(--transition);
+    }
+    body.dark .mobile-nav-panel {
+      background: var(--dark-card);
+    }
+    .mobile-nav.open .mobile-nav-panel {
+      right: 0;
+    }
+    .mobile-nav-close {
+      align-self: flex-end;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    /* School Profile */
+    .school-hero {
+      padding: 48px 24px;
+      color: white;
+      position: relative;
+    }
+    .school-hero-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .school-hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      font-family: var(--font-display);
+    }
+    .school-stats {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .school-stat {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+    }
+    .section {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: -40px;
+      position: relative;
+      z-index: 3;
+    }
+    .profile-card {
+      background: var(--light-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: var(--transition);
+    }
+    body.dark .profile-card {
+      background: var(--dark-card);
+    }
+    .profile-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .info-label {
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .info-value {
+      font-weight: 700;
+    }
+    .slots-detail {
+      margin: 20px 0;
+    }
+    .slots-bar-large {
+      height: 12px;
+      background: var(--border);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin: 12px 0;
+    }
+    .slots-fill {
+      height: 100%;
+      transition: width 0.5s ease;
+    }
+    .apply-section {
+      background: var(--light-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      text-align: center;
+      margin-top: 32px;
+      position: relative;
+      z-index: 3;
+    }
+    body.dark .apply-section {
+      background: var(--dark-card);
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Similar Schools Section */
+    .similar-schools {
+      margin-top: 48px;
+    }
+    .similar-schools h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      margin-bottom: 24px;
+    }
+    .similar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .similar-card {
+      background: var(--light-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    body.dark .similar-card {
+      background: var(--dark-card);
+    }
+    .similar-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+    }
+    .similar-card h4 {
+      font-family: var(--font-display);
+      margin-bottom: 8px;
+    }
+    .similar-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .custom-toast {
+      background: var(--light-card);
+      border-left: 4px solid var(--primary);
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideInRight 0.3s ease;
+    }
+    body.dark .custom-toast {
+      background: var(--dark-card);
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    footer {
+      background: #0b0f19;
+      color: #94a3b8;
+      padding: 60px 24px 30px;
+      margin-top: 60px;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 48px;
+      margin-bottom: 40px;
+    }
+    .footer-grid h4 {
+      color: white;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+    .footer-grid a {
+      display: block;
+      color: #94a3b8;
+      text-decoration: none;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+    }
+    .footer-grid a:hover {
+      color: var(--primary-light);
+    }
+    .footer-bottom {
+      border-top: 1px solid #1e293b;
+      padding-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .desktop-nav {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="announcement-strip">
+  <span class="dot"></span>
+  <span>🇰🇪 Ministry of Education Official Portal | 2027 Admissions Open | Apply before 28 Feb 2027</span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-shield"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="logo-text">
+        <strong>GovSchools Kenya</strong>
+        <span>Ministry of Education Portal</span>
+      </div>
+    </a>
+    <nav class="desktop-nav">
+      <a href="index.html">Home</a>
+      <a href="search.html">Find Schools</a>
+      <a href="dashboard.html">My Applications</a>
+      <a href="#">Help Centre</a>
+    </nav>
+    <div class="header-actions">
+      <button class="dark-toggle" id="darkToggle"><i class="fa-regular fa-moon"></i></button>
+      <div id="headerAuthButtons"></div>
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-panel">
+    <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button>
+    <a href="index.html">Home</a>
+    <a href="search.html">Find Schools</a>
+    <a href="dashboard.html">My Applications</a>
+    <a href="#">Help Centre</a>
+  </div>
+</div>
+
+<div id="schoolHero" class="school-hero"></div>
+
+<section class="section">
+  <div class="profile-grid">
+    <div class="profile-card">
+      <h2><i class="fa-solid fa-circle-info"></i> School Information</h2>
+      <div id="schoolInfo"></div>
+    </div>
+    <div class="profile-card">
+      <h2><i class="fa-solid fa-chart-line"></i> Admission Metrics</h2>
+      <div id="admissionInfo"></div>
+    </div>
+  </div>
+  <div class="apply-section" id="applySection"></div>
+  
+  <!-- Similar Schools Section -->
+  <div class="similar-schools" id="similarSchools">
+    <h3><i class="fa-solid fa-building-columns"></i> Similar Schools You May Consider</h3>
+    <div class="similar-grid" id="similarGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="logo-text"><strong style="color:white">GovSchools Kenya</strong><span style="color:#64748b">Ministry of Education Portal</span></div>
+        <p style="margin-top:16px">Official interactive portal for verified registration procedures throughout the Republic of Kenya.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <a href="search.html">Find Schools</a>
+        <a href="dashboard.html">My Applications</a>
+        <a href="#">Help Centre</a>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <a href="#">Contact MoE</a>
+        <a href="#">Privacy Framework</a>
+        <a href="#">Terms of Use</a>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <a href="#">Admission Guidelines</a>
+        <a href="#">Fee Structure</a>
+        <a href="#">NEMIS Portal</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2027 Ministry of Education, Republic of Kenya. All rights reserved.</span>
+      <div>
+        <span>🔒 Secured</span>
+        <span style="margin-left:16px">🇰🇪 Official</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/school-data.js"></script>
+<script>
+// --- Global State ---
+let currentSchool = null;
+let allSchools = [];
+
+// --- Helper Functions ---
+function getSchoolId() {
+  const params = new URLSearchParams(window.location.search);
+  return parseInt(params.get('id'));
+}
+
+function loadSchoolData() {
+  allSchools = window.SCHOOL_DATA.getAllSchools();
+  const id = getSchoolId();
+  currentSchool = allSchools.find(s => s.id === id);
+  
+  if(!currentSchool || currentSchool.status !== 'active') {
+    document.getElementById('schoolHero').innerHTML = '<div style="padding:100px; text-align:center;"><h2>School not found</h2><a href="search.html" class="btn-primary">Back to Search</a></div>';
+    document.getElementById('similarSchools').style.display = 'none';
+    document.getElementById('profile-grid').style.display = 'none';
+    document.getElementById('applySection').style.display = 'none';
+    return;
+  }
+  
+  renderSchoolProfile();
+}
+
+function renderSchoolProfile() {
+  if(!currentSchool) return;
+  
+  // Update page title
+  document.title = `${currentSchool.name} - GovSchools Kenya`;
+  
+  const pct = Math.round((currentSchool.remaining / currentSchool.slots) * 100);
+  const gradientColor = currentSchool.color || `linear-gradient(135deg,#1a4731,${window.SCHOOL_DATA.getRandomColor()})`;
+  
+  document.getElementById('schoolHero').innerHTML = `
+    <div style="background:${gradientColor}; padding:60px 24px;">
+      <div class="school-hero-content">
+        <h1><i class="fa-solid fa-school"></i> ${escapeHtml(currentSchool.name)}</h1>
+        <p style="font-size:1.1rem; margin-bottom:16px;">NEMIS Code: ${currentSchool.nemis} | Established: ${currentSchool.established || 'N/A'}</p>
+        <div class="school-stats">
+          <div class="school-stat"><i class="fa-solid fa-location-dot"></i> ${currentSchool.county} County</div>
+          <div class="school-stat"><i class="fa-solid fa-tag"></i> ${currentSchool.category} School</div>
+          <div class="school-stat"><i class="fa-solid fa-${currentSchool.gender === 'Boys' ? 'mars' : (currentSchool.gender === 'Girls' ? 'venus' : 'venus-mars')}"></i> ${currentSchool.gender} Only</div>
+          <div class="school-stat"><i class="fa-solid fa-bed"></i> ${currentSchool.boarding}</div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('schoolInfo').innerHTML = `
+    <div class="info-row"><span class="info-label"><i class="fa-solid fa-user"></i> Principal/Head Teacher</span><span class="info-value">${escapeHtml(currentSchool.principal) || 'To be announced'}</span></div>
+    <div class="info-row"><span class="info-label"><i class="fa-regular fa-calendar"></i> Year Established</span><span class="info-value">${currentSchool.established || 'N/A'}</span></div>
+    <div class="info-row"><span class="info-label"><i class="fa-solid fa-quote-left"></i> School Motto</span><span class="info-value">"${escapeHtml(currentSchool.motto) || 'Excellence in Education'}"</span></div>
+    <div class="info-row"><span class="info-label"><i class="fa-solid fa-users"></i> Total Capacity</span><span class="info-value">${currentSchool.slots} Students</span></div>
+    <div class="info-row"><span class="info-label"><i class="fa-solid fa-graduation-cap"></i> Current Vacancies</span><span class="info-value" style="color:${currentSchool.remaining <= 10 ? '#ef4444' : '#006B3F'}">${currentSchool.remaining} Slots</span></div>
+  `;
+  
+  document.getElementById('admissionInfo').innerHTML = `
+    <div class="slots-detail">
+      <div class="info-row"><span class="info-label">2024 Mean Score</span><span class="info-value"><strong>${currentSchool.mean2024}</strong></span></div>
+      <div class="info-row"><span class="info-label">Minimum Cutoff (2024)</span><span class="info-value"><strong>${currentSchool.cutoff}</strong></span></div>
+      <div class="info-row"><span class="info-label">Admission Status</span><span class="info-value"><span class="status-badge" style="background:${currentSchool.remaining > 0 ? '#d1fae5' : '#fee2e2'}; color:${currentSchool.remaining > 0 ? '#059669' : '#dc2626'};">${currentSchool.remaining > 0 ? '✅ Applications Open' : '❌ Closed'}</span></span></div>
+    </div>
+    <div class="slots-detail">
+      <div class="info-label">Vacancy Status</div>
+      <div class="slots-bar-large"><div class="slots-fill" style="width:${pct}%; background:${pct > 20 ? '#006B3F' : '#ef4444'}"></div></div>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-top:8px;">${pct}% of seats filled (${currentSchool.remaining} remaining of ${currentSchool.slots})</p>
+    </div>
+  `;
+  
+  const session = JSON.parse(localStorage.getItem('govschools_session') || 'null');
+  const isApplied = checkIfApplied(currentSchool.id);
+  
+  document.getElementById('applySection').innerHTML = `
+    <h3><i class="fa-solid fa-file-signature"></i> Ready to Apply?</h3>
+    <p style="margin: 16px 0; color: var(--text-muted);">Complete your application online through our secure portal. Required documents: Birth Certificate, KCPE Results Slip, National ID (Parent).</p>
+    ${isApplied ? '<div style="background:#d1fae5; padding:16px; border-radius:12px; color:#059669;"><i class="fa-solid fa-check-circle"></i> You have already applied to this school. Track your application on the dashboard.</div>' : (session ? `<button class="btn-primary" onclick="startApplication(${currentSchool.id})" style="font-size:1rem; padding:14px 32px;"><i class="fa-solid fa-paper-plane"></i> Start Application Process</button>` : `<button class="btn-primary" onclick="window.location.href='access-gateway.html'" style="font-size:1rem; padding:14px 32px;"><i class="fa-solid fa-right-to-bracket"></i> Login to Apply</button>`)}
+    <p style="margin-top: 16px; font-size: 0.8rem; color: var(--text-muted);"><i class="fa-solid fa-shield-alt"></i> Application fee: KES 1,050 (KES 1,000 school fee + KES 50 platform fee via M-Pesa)</p>
+  `;
+  
+  // Render similar schools
+  renderSimilarSchools();
+}
+
+function renderSimilarSchools() {
+  const similar = allSchools.filter(s => 
+    s.id !== currentSchool.id && 
+    s.status === 'active' &&
+    (s.category === currentSchool.category || s.gender === currentSchool.gender)
+  ).slice(0, 3);
+  
+  const grid = document.getElementById('similarGrid');
+  if (similar.length === 0) {
+    grid.innerHTML = '<p>No similar schools found</p>';
+    return;
+  }
+  
+  grid.innerHTML = similar.map(s => {
+    const gradientColor = s.color || `linear-gradient(135deg,#1a4731,${window.SCHOOL_DATA.getRandomColor()})`;
+    return `
+      <a href="school-profile.html?id=${s.id}" class="similar-card">
+        <h4><i class="fa-solid fa-school"></i> ${escapeHtml(s.name)}</h4>
+        <p><i class="fa-solid fa-location-dot"></i> ${s.county} County</p>
+        <p><i class="fa-solid fa-chart-line"></i> Mean: ${s.mean2024} | Cutoff: ${s.cutoff}</p>
+        <p><span class="status-badge" style="background:${s.remaining > 0 ? '#d1fae5' : '#fee2e2'}; color:${s.remaining > 0 ? '#059669' : '#dc2626'}">${s.remaining} slots left</span></p>
+      </a>
+    `;
+  }).join('');
+}
+
+function checkIfApplied(schoolId) {
+  const session = JSON.parse(localStorage.getItem('govschools_session') || 'null');
+  if(!session) return false;
+  const apps = JSON.parse(localStorage.getItem('govschools_applications') || '[]');
+  return apps.some(a => a.userPhone === session.phone && a.schoolId === schoolId);
+}
+
+function startApplication(schoolId) {
+  window.location.href = `apply.html?school_id=${schoolId}`;
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+}
+
+// --- Navigation & Auth ---
+function updateNav() {
+  const session = JSON.parse(localStorage.getItem('govschools_session') || 'null');
+  const authDiv = document.getElementById('headerAuthButtons');
+  if(session && authDiv) {
+    authDiv.innerHTML = `<span style="font-size:0.85rem; font-weight:700;"><i class="fa-solid fa-circle-user"></i> ${escapeHtml(session.name?.split(' ')[0] || 'User')}</span><a href="dashboard.html" class="btn-ghost" style="padding:8px 12px;">Dashboard</a><button class="btn-ghost" onclick="doLogout()" style="color:#ef4444;">Sign Out</button>`;
+  } else if(authDiv) {
+    authDiv.innerHTML = `<button class="btn-ghost" onclick="window.location.href='access-gateway.html'">Login</button><button class="btn-primary" onclick="window.location.href='access-gateway.html'">Register</button>`;
+  }
+}
+
+function doLogout() { 
+  localStorage.removeItem('govschools_session'); 
+  window.location.href = 'index.html'; 
+}
+
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'custom-toast';
+  let icon = 'fa-circle-check';
+  let color = 'var(--primary)';
+  if (type === 'error') { icon = 'fa-circle-exclamation'; color = '#dc2626'; }
+  if (type === 'warning') { icon = 'fa-triangle-exclamation'; color = '#f59e0b'; }
+  toast.style.borderLeftColor = color;
+  toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color};"></i> ${escapeHtml(message)}`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(100%)';
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
+}
+
+function toggleDark() {
+  document.body.classList.toggle('dark');
+  localStorage.setItem('govschools_dark', document.body.classList.contains('dark') ? '1' : '0');
+  const icon = document.querySelector('#darkToggle i');
+  if (icon) icon.className = document.body.classList.contains('dark') ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+}
+
+// --- Event Listeners & Initialization ---
+document.getElementById('darkToggle')?.addEventListener('click', toggleDark);
+if(localStorage.getItem('govschools_dark') === '1') {
+  document.body.classList.add('dark');
+  const icon = document.querySelector('#darkToggle i');
+  if (icon) icon.className = 'fa-solid fa-sun';
+}
+
+document.getElementById('hamburger')?.addEventListener('click', () => {
+  document.getElementById('mobileNav').classList.add('open');
+});
+
+document.getElementById('mobileNav')?.addEventListener('click', (e) => {
+  if(e.target === document.getElementById('mobileNav')) {
+    document.getElementById('mobileNav').classList.remove('open');
+  }
+});
+
+// Listen for school updates from admin/ministry panels
+window.addEventListener('schoolsUpdated', () => {
+  loadSchoolData();
+  showToast('School information has been updated!', 'success');
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadSchoolData();
+  updateNav();
+});
+</script>
+</body>
+</html>

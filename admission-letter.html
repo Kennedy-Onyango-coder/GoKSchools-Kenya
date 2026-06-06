@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Official Placement Credentials — Ministry of Education | GovSchools Kenya</title>
+  <meta name="description" content="Official placement notification letter from the Ministry of Education, Republic of Kenya." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #006B3F;
+      --primary-light: #129a5f;
+      --primary-dark: #004d2e;
+      --secondary: #990000;
+      --secondary-light: #cc0000;
+      --gold: #D4A017;
+      --gold-light: #F5C842;
+      --dark-bg: #0b0f19;
+      --dark-card: #161c2a;
+      --light-bg: #f8fafc;
+      --light-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: var(--font-sans);
+      background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+      color: var(--text-main);
+      transition: var(--transition);
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 40px 24px;
+    }
+    
+    body.dark {
+      background: linear-gradient(135deg, var(--dark-bg) 0%, #0f1419 100%);
+      color: #f1f5f9;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    /* A4 Paper Card with Watermark */
+    .a4-paper-card {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      padding: 48px 56px;
+      transition: var(--transition);
+      overflow: hidden;
+      z-index: 1;
+    }
+    body.dark .a4-paper-card {
+      background: #1a1f2e;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Watermark Styles */
+    .watermark-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.08;
+    }
+    body.dark .watermark-container {
+      opacity: 0.05;
+    }
+    .watermark-image {
+      max-width: 80%;
+      max-height: 80%;
+      width: auto;
+      height: auto;
+      transform: rotate(-25deg);
+    }
+    .watermark-text {
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      transform: rotate(-25deg);
+      white-space: nowrap;
+      letter-spacing: 0.1em;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* Letter Content - Higher z-index than watermark */
+    .letter-content {
+      position: relative;
+      z-index: 2;
+      background: transparent;
+    }
+
+    /* Letter Header with Government Logo */
+    .letter-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .letter-emblem {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .government-logo {
+      width: 70px;
+      height: auto;
+      display: block;
+    }
+    .letterhead-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    body.dark .letterhead-title {
+      color: var(--primary-light);
+    }
+
+    /* Divider */
+    .letter-divider {
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--gold), var(--secondary), var(--primary));
+      margin: 20px 0;
+    }
+
+    /* QR Placeholder */
+    .simple-qr {
+      width: 80px;
+      height: 80px;
+      background: white;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 0.6rem;
+      text-align: center;
+      font-family: monospace;
+      color: var(--primary);
+    }
+    body.dark .simple-qr {
+      background: #1a1f2e;
+      border-color: var(--primary-light);
+      color: var(--primary-light);
+    }
+
+    /* Buttons */
+    .btn-primary, .btn-secondary {
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+    }
+    .btn-secondary:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+    body.dark .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .custom-toast {
+      background: var(--light-card);
+      border-left: 4px solid var(--primary);
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideInRight 0.3s ease;
+    }
+    body.dark .custom-toast {
+      background: var(--dark-card);
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+        margin: 0;
+      }
+      body.dark .a4-paper-card {
+        background: white;
+        color: black;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .a4-paper-card {
+        box-shadow: none;
+        padding: 20px;
+      }
+      .watermark-container {
+        opacity: 0.03 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .simple-qr {
+        background: white;
+        border-color: black;
+        color: black;
+      }
+      .government-logo {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 20px 16px;
+      }
+      .a4-paper-card {
+        padding: 24px 20px;
+      }
+      .letterhead-title {
+        font-size: 1.1rem;
+      }
+      .watermark-text {
+        font-size: 1rem;
+        white-space: normal;
+        width: 80%;
+      }
+      .government-logo {
+        width: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="a4-paper-card" id="printableCardScope">
+  
+  <!-- Watermark Container -->
+  <div class="watermark-container" id="watermarkContainer">
+    <img src="logo/government-logo.png" alt="Government of Kenya" class="watermark-image" id="watermarkImg" onerror="handleWatermarkError()">
+  </div>
+
+  <!-- Letter Content -->
+  <div class="letter-content">
+    <div class="letter-header">
+      <div class="letter-emblem">
+        <img src="logo/government-logo.png" alt="Government of Kenya Logo" class="government-logo" id="headerLogo" onerror="handleHeaderLogoError()">
+      </div>
+      <h2 class="letterhead-title">THE REPUBLIC OF KENYA</h2>
+      <h3 style="font-size:1rem; font-weight:700; letter-spacing:0.02em; margin-top:2px;">MINISTRY OF EDUCATION</h3>
+      <p style="font-size:0.7rem; margin-top:4px; text-transform:uppercase; color: var(--text-muted);">
+        State Department for Basic Education • Placement Automation Clearance System
+      </p>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; font-size:0.85rem; border-top:1px solid var(--border); padding-top:12px; margin-top:16px; flex-wrap:wrap; gap:12px;">
+      <div>
+        <strong>ISSUING INSTITUTION:</strong> <span id="letSchoolTitle" style="text-transform:uppercase; font-weight:700;">NAIROBI SCHOOL</span><br>
+        P.O. Box 30084-00100, Nairobi<br>
+        <span id="letSchoolEmail">info@nairobischool.ac.ke</span>
+      </div>
+      <div style="text-align:right;">
+        <strong>Issue Date:</strong> <span id="letIssueDate">15 December 2026</span><br>
+        <strong>Academic Year:</strong> 2027 Cohort Cycle<br>
+        <strong>NEMIS Code:</strong> <span id="letSchoolCode">NSC001</span>
+      </div>
+    </div>
+
+    <div class="letter-divider"></div>
+
+    <div style="font-size:1.1rem; font-weight:800; text-align:center; margin-bottom:24px; text-decoration:underline;">
+      OFFICIAL NOTIFICATION: SECONDARY PLACEMENT SANCTION
+    </div>
+
+    <div style="font-size:1rem; text-align:justify; margin-bottom:20px; line-height:1.6;">
+      To the Parent/Guardian of: <strong id="letStudentTitle" style="text-transform:uppercase;">PETER KAMAU WANJIKU</strong>,<br><br>
+      The Cabinet Secretary for Education, acting under the powers conferred by the Basic Education Act (No. 14 of 2013), 
+      hereby conveys administrative verification confirming your candidate's qualification parameters meet the authorized 
+      allocation thresholds. The Ministry issues state validation admitting the candidate to the following institution:
+    </div>
+
+    <!-- School Placement Box -->
+    <div style="background: rgba(0,107,63,0.05); border: 2px solid var(--primary); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size:0.95rem;">
+        <div><strong>Admission Number:</strong> <span id="letAdmissionCode" style="font-family:monospace; font-weight:700;">NSC/2027/F1/0421</span></div>
+        <div><strong>KNEC Index Number:</strong> <span id="letIndexCode" style="font-family:monospace;">12345678901</span></div>
+        <div><strong>KCPE Score:</strong> <span id="letMarksDisplay">425 / 500</span></div>
+        <div><strong>Stream Allocation:</strong> Form One (Form 1)</div>
+        <div><strong>Reporting Date:</strong> <span id="letReportingDisplay">29 January 2027</span> at 8:00 AM</div>
+        <div><strong>Reporting Venue:</strong> School Main Hall</div>
+      </div>
+    </div>
+
+    <!-- Fee Structure -->
+    <div style="font-size:1rem; margin-bottom:12px; font-weight:700;">APPROVED FEE STRUCTURE (PER TERM):</div>
+    <table style="width:100%; border-collapse:collapse; margin-bottom:24px; font-size:0.9rem;">
+      <thead>
+        <tr style="border-bottom:2px solid var(--primary); background: rgba(0,107,63,0.05);">
+          <th style="padding:8px; text-align:left;">Fee Component</th>
+          <th style="padding:8px; text-align:right;">Amount (KES)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px;">Tuition Fee (Subsidized)</td>
+          <td style="padding:8px; text-align:right;">22,500</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px;">Boarding Facilities</td>
+          <td style="padding:8px; text-align:right;">18,000</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px;">Development Levy</td>
+          <td style="padding:8px; text-align:right;">5,000</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px;">Activity Fee</td>
+          <td style="padding:8px; text-align:right;">2,000</td>
+        </tr>
+        <tr style="background: rgba(0,107,63,0.08); font-weight:700;">
+          <td style="padding:10px;">TOTAL TERM ONE FEES</td>
+          <td style="padding:10px; text-align:right;">KES 47,500</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Payment Instructions -->
+    <div style="background: #fffdf3; border: 1px solid var(--gold); border-radius: 8px; padding: 16px; margin-bottom: 32px;">
+      <strong><i class="fa-solid fa-credit-card"></i> PAYMENT INSTRUCTIONS:</strong>
+      <ol style="margin: 12px 0 0 20px; line-height: 1.6;">
+        <li>Pay via M-Pesa Pay Bill: <strong>247247</strong></li>
+        <li>Account Number: <span id="letRemitAccount" style="font-family:monospace; font-weight:700;">NSC/2027/F1/0421</span></li>
+        <li>Amount: KES 47,500 (Full term fees)</li>
+        <li>Use the admission number as reference</li>
+        <li>Keep transaction receipt for verification</li>
+      </ol>
+    </div>
+
+    <!-- Signature and QR -->
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px; border-top:1px solid var(--border); padding-top:20px;">
+      <div>
+        <div class="simple-qr" id="qrCodeContainer">
+          <i class="fa-solid fa-qrcode" style="font-size: 2rem;"></i>
+          <span style="font-size: 0.55rem;" id="qrText">GOK/2027/NSC</span>
+        </div>
+        <span style="font-size:0.65rem; display:block; margin-top:8px;" id="letQrLabel">Verification Token: GOK/2027/NSC/0421</span>
+      </div>
+      
+      <div style="text-align:right; max-width:300px;">
+        <div style="margin-bottom:8px;">
+          <svg width="200" height="50" viewBox="0 0 300 50">
+            <path d="M10,35 Q80,15 150,30 Q220,45 290,25" stroke="#1a365d" stroke-width="1.5" fill="none"/>
+            <text x="100" y="45" font-size="10" fill="#555" style="font-family: 'Brush Script MT', cursive;">Dr. Belio Kipsang, CBS</text>
+          </svg>
+        </div>
+        <strong>Principal Secretary</strong><br>
+        <span style="font-size:0.75rem;">State Department for Basic Education</span><br>
+        <span style="font-size:0.7rem; color: var(--text-muted);">Digitally Signed - Ministry of Education</span>
+      </div>
+    </div>
+
+    <!-- Footer Note -->
+    <div style="margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.7rem; text-align: center; color: var(--text-muted);">
+      <i class="fa-solid fa-shield-haltered"></i> This is a system-generated document. Verification can be done online at portal.education.go.ke/verify
+      <br>Document ID: <span id="letDocId">GOK-MOE-2027-001</span> | Issued under the Basic Education Act 2013
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="no-print" style="margin-top: 40px; display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+      <button class="btn-primary" onclick="printLetter()">
+        <i class="fa-solid fa-print"></i> Print Letter (A4)
+      </button>
+      <button class="btn-primary" onclick="downloadAsPDF()">
+        <i class="fa-solid fa-file-pdf"></i> Download PDF
+      </button>
+      <button class="btn-secondary" onclick="shareLetter()">
+        <i class="fa-solid fa-share-alt"></i> Share
+      </button>
+      <button class="btn-secondary" onclick="window.location.href='dashboard.html'">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// Complete Data Structures
+const SCHOOLS = [
+  { id: "1", name: "Nairobi School", nemis_code: "NSC001", category: "National", level: "Senior", cutoff_kcpe: 380, reporting_date: "29 January 2027", email: "info@nairobischool.ac.ke", color: "#006B3F" },
+  { id: "2", name: "Alliance High School", nemis_code: "AHS001", category: "National", level: "Senior", cutoff_kcpe: 400, reporting_date: "30 January 2027", email: "info@alliancehigh.ac.ke", color: "#1d4ed8" },
+  { id: "3", name: "Kenya High School", nemis_code: "KHS001", category: "National", level: "Senior", cutoff_kcpe: 375, reporting_date: "28 January 2027", email: "info@kenyahigh.ac.ke", color: "#990000" },
+  { id: "4", name: "Starehe Boys Centre", nemis_code: "STR001", category: "National", level: "Senior", cutoff_kcpe: 390, reporting_date: "31 January 2027", email: "info@starehe.ac.ke", color: "#6366f1" },
+  { id: "5", name: "Moi Girls School", nemis_code: "MGS001", category: "National", level: "Senior", cutoff_kcpe: 365, reporting_date: "29 January 2027", email: "info@moigirls.ac.ke", color: "#b45309" },
+  { id: "6", name: "Mangu High School", nemis_code: "MNH001", category: "National", level: "Senior", cutoff_kcpe: 385, reporting_date: "30 January 2027", email: "info@mangu.ac.ke", color: "#0369a1" }
+];
+
+const MOCK_STUDENTS = [
+  { id: "st-1", name: "Brian Onyango", index_no: "12345678901", marks: 408, dob: "2010-05-15", gender: "Male", parent_name: "John Onyango", parent_phone: "0712345678" },
+  { id: "st-2", name: "Wanjiku Muthoni", index_no: "12345678902", marks: 392, dob: "2010-08-22", gender: "Female", parent_name: "Mary Muthoni", parent_phone: "0723456789" },
+  { id: "st-3", name: "James Otieno", index_no: "12345678903", marks: 415, dob: "2010-03-10", gender: "Male", parent_name: "Peter Otieno", parent_phone: "0734567890" }
+];
+
+const MOCK_APPLICATIONS = [
+  { id: "app-101", school_id: "1", student_id: "st-1", ref: "GOK/2027/NSC/0421", status: "approved", date: "2026-12-15" },
+  { id: "app-102", school_id: "2", student_id: "st-2", ref: "GOK/2027/AHS/0422", status: "approved", date: "2026-12-14" },
+  { id: "app-103", school_id: "3", student_id: "st-3", ref: "GOK/2027/KHS/0423", status: "approved", date: "2026-12-13" }
+];
+
+// Handle watermark image error - fallback to text watermark
+function handleWatermarkError() {
+  const watermarkContainer = document.getElementById('watermarkContainer');
+  if (watermarkContainer) {
+    watermarkContainer.innerHTML = '<div class="watermark-text">GOVERNMENT OF KENYA<br>MINISTRY OF EDUCATION</div>';
+    const textDiv = watermarkContainer.querySelector('.watermark-text');
+    if (textDiv) {
+      textDiv.style.color = 'var(--primary)';
+      textDiv.style.opacity = '0.08';
+      textDiv.style.fontSize = '2rem';
+      textDiv.style.textAlign = 'center';
+      textDiv.style.lineHeight = '1.2';
+    }
+  }
+}
+
+// Handle header logo error - fallback to text or SVG
+function handleHeaderLogoError() {
+  const headerLogo = document.getElementById('headerLogo');
+  if (headerLogo) {
+    // Replace with SVG emblem
+    headerLogo.outerHTML = `
+      <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#006B3F"/>
+        <path d="M12 6v11M9 9h6M9 13h6" stroke="#D4A017" stroke-width="2"/>
+      </svg>
+    `;
+  }
+}
+
+// Get application ID from URL
+function getApplicationId() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("app_id") || params.get("id") || "app-101";
+}
+
+// Format date
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+// Load letter data
+function loadLetterData() {
+  const appId = getApplicationId();
+  
+  // Find application, school, and student data
+  let application = MOCK_APPLICATIONS.find(a => a.id === appId);
+  if (!application) {
+    // Try to get from localStorage
+    const storedApps = JSON.parse(localStorage.getItem('govschools_applications') || '[]');
+    application = storedApps.find(a => a.id === appId || a.referenceNumber === appId);
+  }
+  
+  if (!application) {
+    application = MOCK_APPLICATIONS[0];
+  }
+  
+  const school = SCHOOLS.find(s => s.id === application.school_id) || SCHOOLS[0];
+  const student = MOCK_STUDENTS.find(s => s.id === application.student_id) || MOCK_STUDENTS[0];
+  
+  // Update letter content
+  document.getElementById("letSchoolTitle").innerText = school.name;
+  document.getElementById("letSchoolCode").innerText = school.nemis_code;
+  document.getElementById("letSchoolEmail").innerText = school.email;
+  document.getElementById("letStudentTitle").innerText = student.name;
+  document.getElementById("letIndexCode").innerText = student.index_no;
+  document.getElementById("letMarksDisplay").innerHTML = `${student.marks} / 500`;
+  document.getElementById("letReportingDisplay").innerText = school.reporting_date;
+  document.getElementById("letIssueDate").innerText = formatDate(application.date || new Date());
+  
+  const admissionNumber = `${school.nemis_code}/2027/F1/${Math.floor(1000 + Math.random() * 9000)}`;
+  document.getElementById("letAdmissionCode").innerText = admissionNumber;
+  document.getElementById("letRemitAccount").innerText = admissionNumber;
+  
+  const docId = `GOK-MOE-${school.nemis_code}-${Math.floor(Math.random() * 10000)}`;
+  document.getElementById("letDocId").innerText = docId;
+  document.getElementById("letQrLabel").innerText = `Verification Token: ${application.ref || docId}`;
+  
+  const qrText = document.getElementById("qrText");
+  if (qrText) {
+    qrText.innerHTML = `${school.nemis_code}<br>${student.index_no.substring(0, 8)}`;
+  }
+}
+
+// Print letter
+function printLetter() {
+  window.print();
+  showToast("Print dialog opened. Select printer to continue.", "success");
+}
+
+// Download as PDF (using browser print with PDF option)
+function downloadAsPDF() {
+  showToast("Preparing PDF document...", "info");
+  setTimeout(() => {
+    window.print();
+    showToast("Select 'Save as PDF' as the destination printer.", "info");
+  }, 500);
+}
+
+// Share letter
+function shareLetter() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Placement Letter - GovSchools Kenya',
+      text: 'Your official placement letter from the Ministry of Education',
+      url: window.location.href
+    }).catch(() => {
+      showToast("Share cancelled or failed", "error");
+    });
+  } else {
+    // Fallback - copy to clipboard
+    navigator.clipboard.writeText(window.location.href);
+    showToast("Link copied to clipboard! Share with others.", "success");
+  }
+}
+
+// Show toast notification
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'custom-toast';
+  
+  let icon = 'fa-circle-check';
+  let color = 'var(--primary)';
+  if (type === 'error') { icon = 'fa-circle-exclamation'; color = '#dc2626'; }
+  if (type === 'warning') { icon = 'fa-triangle-exclamation'; color = '#f59e0b'; }
+  if (type === 'info') { icon = 'fa-circle-info'; color = '#3b82f6'; }
+  
+  toast.style.borderLeftColor = color;
+  toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color};"></i> ${message}`;
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(100%)';
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
+}
+
+// Dark mode toggle
+function initDarkMode() {
+  const isDark = localStorage.getItem('govschools_dark') === '1';
+  if (isDark) {
+    document.body.classList.add('dark');
+  }
+}
+
+// Initialize watermark and logos
+function initImages() {
+  const watermarkImg = document.getElementById('watermarkImg');
+  if (watermarkImg) {
+    watermarkImg.onerror = handleWatermarkError;
+    setTimeout(() => {
+      if (watermarkImg.complete && watermarkImg.naturalWidth === 0) {
+        handleWatermarkError();
+      }
+    }, 1000);
+  }
+  
+  const headerLogo = document.getElementById('headerLogo');
+  if (headerLogo) {
+    headerLogo.onerror = handleHeaderLogoError;
+    setTimeout(() => {
+      if (headerLogo.complete && headerLogo.naturalWidth === 0) {
+        handleHeaderLogoError();
+      }
+    }, 1000);
+  }
+}
+
+// Add keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+    e.preventDefault();
+    printLetter();
+  }
+});
+
+// Initialize on load
+document.addEventListener("DOMContentLoaded", () => {
+  loadLetterData();
+  initDarkMode();
+  initImages();
+  
+  // Add verification badge if coming from authenticated session
+  const session = JSON.parse(localStorage.getItem('govschools_session') || 'null');
+  if (session) {
+    const footer = document.querySelector('.letter-divider');
+    if (footer && !document.querySelector('.verify-badge')) {
+      const verifyBadge = document.createElement('div');
+      verifyBadge.className = 'no-print verify-badge';
+      verifyBadge.style.textAlign = 'center';
+      verifyBadge.style.marginTop = '16px';
+      verifyBadge.innerHTML = `<span style="background: #d1fae5; color: #059669; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-check-circle"></i> Digitally Verified for ${session.name || 'Parent'}
+      </span>`;
+      document.querySelector('.letter-content')?.appendChild(verifyBadge);
+    }
+  }
+});
+
+// Expose functions globally
+window.printLetter = printLetter;
+window.downloadAsPDF = downloadAsPDF;
+window.shareLetter = shareLetter;
+window.showToast = showToast;
+window.handleWatermarkError = handleWatermarkError;
+window.handleHeaderLogoError = handleHeaderLogoError;
+</script>
+</body>
+</html>

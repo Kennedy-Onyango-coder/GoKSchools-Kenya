@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Root System Administration — GovSchools Kenya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #006B3F;
+      --primary-light: #129a5f;
+      --secondary: #990000;
+      --secondary-light: #cc0000;
+      --dark-bg: #0b0f19;
+      --dark-card: #161c2a;
+      --light-bg: #f8fafc;
+      --light-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --transition: all 0.3s ease;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--light-bg);
+      color: var(--text-main);
+      transition: var(--transition);
+      line-height: 1.5;
+    }
+    
+    body.dark {
+      background-color: var(--dark-bg);
+      color: #f1f5f9;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --light-card: var(--dark-card);
+    }
+
+    /* Header */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid var(--primary);
+      padding: 12px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    body.dark header {
+      background: rgba(11, 15, 25, 0.95);
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+    .logo-shield {
+      width: 42px;
+      height: 42px;
+      background: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+    }
+    .logo-text strong {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--text-main);
+    }
+    .logo-text span {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .badge-root {
+      background: var(--secondary);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .btn-signout {
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-left: 12px;
+      transition: var(--transition);
+    }
+    .btn-signout:hover {
+      background: rgba(153, 0, 0, 0.1);
+      border-color: var(--secondary);
+      color: var(--secondary);
+    }
+
+    /* Dashboard Layout */
+    .dashboard-frame {
+      display: flex;
+      min-height: calc(100vh - 70px);
+    }
+    
+    .sidebar {
+      width: 280px;
+      background: var(--light-card);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      position: sticky;
+      top: 70px;
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+      cursor: pointer;
+      border-left: 3px solid transparent;
+    }
+    .sidebar-link:hover {
+      background: rgba(0, 107, 63, 0.08);
+      color: var(--primary);
+    }
+    .sidebar-link.active {
+      background: rgba(0, 107, 63, 0.1);
+      color: var(--primary);
+      border-left-color: var(--primary);
+    }
+    
+    .main-viewport {
+      flex: 1;
+      padding: 28px 32px;
+      overflow-x: auto;
+    }
+    
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    
+    .stat-node {
+      background: var(--light-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      transition: var(--transition);
+    }
+    .stat-node .qty {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      font-family: var(--font-display);
+    }
+    .stat-node .meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    
+    .table-surface {
+      background: var(--light-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow-x: auto;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .data-table th, .data-table td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      background: rgba(0, 0, 0, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-weight: 600;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+    .btn-approve {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-right: 8px;
+    }
+    .btn-delete {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-approve:hover { background: #059669; }
+    .btn-delete:hover { background: #dc2626; }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    .status-active { background: #d1fae5; color: #059669; }
+    .status-pending { background: #fef3c7; color: #d97706; }
+    .status-inactive { background: #fee2e2; color: #dc2626; }
+    
+    body.dark .status-active { background: #064e3b; color: #34d399; }
+    body.dark .status-pending { background: #451a03; color: #fbbf24; }
+    body.dark .status-inactive { background: #7f1d1d; color: #fca5a5; }
+    
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: var(--light-card);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      max-width: 550px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-content h3 {
+      font-family: var(--font-display);
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--light-bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+    }
+    body.dark .form-control {
+      background: var(--dark-bg);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    
+    @media (max-width: 768px) {
+      .dashboard-frame { flex-direction: column; }
+      .sidebar { width: 100%; position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 16px; }
+      .sidebar ul { display: flex; flex-wrap: wrap; gap: 8px; }
+      .sidebar-link { padding: 10px 16px; border-radius: var(--radius-md); border-left: none; }
+      .sidebar-link.active { border-left: none; background: var(--primary); color: white; }
+      .main-viewport { padding: 20px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-shield"><i class="fa-solid fa-sliders"></i></div>
+      <div class="logo-text">
+        <strong>GovSchools Administration</strong>
+        <span>Superuser Control Panel</span>
+      </div>
+    </a>
+    <div>
+      <span class="badge-root"><i class="fa-solid fa-skull"></i> ROOT ACCESS</span>
+      <button class="btn-signout" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Exit</button>
+    </div>
+  </div>
+</header>
+
+<div class="dashboard-frame">
+  <aside class="sidebar">
+    <ul style="list-style: none;">
+      <li><a href="#" class="sidebar-link active" data-tab="ledger"><i class="fa-solid fa-money-bill-trend-up"></i> Split Payment Ledger</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="logs"><i class="fa-solid fa-server"></i> Sandbox Core Logs</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="system"><i class="fa-solid fa-microchip"></i> System Health</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="schools"><i class="fa-solid fa-school"></i> School Registry</a></li>
+      <li><a href="#" class="sidebar-link" data-tab="verification"><i class="fa-solid fa-clipboard-list"></i> Verification Queue</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-viewport">
+    <!-- Ledger Tab -->
+    <div id="ledgerTab" class="tab-content active">
+      <h2 style="margin-bottom: 20px;"><i class="fa-solid fa-money-bill-trend-up"></i> Daraja API Financial Ledger</h2>
+      <div class="stats-strip">
+        <div class="stat-node"><div class="meta">Aggregated Volume</div><div class="qty" id="totalVolume">KES 0</div></div>
+        <div class="stat-node"><div class="meta">School Allocation</div><div class="qty" id="schoolAllocation">KES 0</div></div>
+        <div class="stat-node"><div class="meta">Platform Revenue</div><div class="qty" id="platformRevenue">KES 0</div></div>
+      </div>
+      <div class="table-surface">
+        <table class="data-table">
+          <thead><tr><th>Receipt</th><th>School</th><th>Amount</th><th>Date</th></tr></thead>
+          <tbody id="ledgerBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Logs Tab -->
+    <div id="logsTab" class="tab-content">
+      <h2 style="margin-bottom: 20px;"><i class="fa-solid fa-server"></i> System Audit Logs</h2>
+      <div class="table-surface">
+        <table class="data-table">
+          <thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>IP</th></tr></thead>
+          <tbody id="logsBody"></tbody>
+        </table>
+      </div>
+      <button class="btn-primary" onclick="clearAllLogs()" style="margin-top: 20px; background: #ef4444;"><i class="fa-solid fa-trash"></i> Clear All Logs</button>
+    </div>
+
+    <!-- System Health Tab -->
+    <div id="systemTab" class="tab-content">
+      <h2 style="margin-bottom: 20px;"><i class="fa-solid fa-microchip"></i> System Health Dashboard</h2>
+      <div class="stats-strip">
+        <div class="stat-node"><div class="meta">API Status</div><div class="qty" id="apiStatus">✅ Online</div></div>
+        <div class="stat-node"><div class="meta">Database</div><div class="qty" id="dbStatus">✅ Connected</div></div>
+        <div class="stat-node"><div class="meta">Uptime</div><div class="qty">99.98%</div></div>
+        <div class="stat-node"><div class="meta">Schools Loaded</div><div class="qty" id="schoolsLoaded">0</div></div>
+      </div>
+    </div>
+
+    <!-- School Registry Tab -->
+    <div id="schoolsTab" class="tab-content">
+      <h2 style="margin-bottom: 20px;"><i class="fa-solid fa-school"></i> School Registry Management</h2>
+      <button class="btn-primary" onclick="openAddSchoolModal()" style="margin-bottom: 20px;"><i class="fa-solid fa-plus"></i> Add New School</button>
+      <div class="table-surface">
+        <table class="data-table">
+          <thead><tr><th>School Name</th><th>NEMIS Code</th><th>County</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="schoolsBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Verification Queue Tab -->
+    <div id="verificationTab" class="tab-content">
+      <h2 style="margin-bottom: 20px;"><i class="fa-solid fa-clipboard-list"></i> Pending Verifications</h2>
+      <div class="stats-strip">
+        <div class="stat-node"><div class="meta">Pending Approvals</div><div class="qty" id="pendingCount">0</div></div>
+      </div>
+      <div class="table-surface">
+        <table class="data-table">
+          <thead><tr><th>School Name</th><th>NEMIS Code</th><th>County</th><th>Submission Date</th><th>Actions</th></tr></thead>
+          <tbody id="verificationBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Add School Modal -->
+<div id="addSchoolModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3><i class="fa-solid fa-plus"></i> Register New School</h3>
+    <div class="form-group"><label>School Name *</label><input type="text" id="newSchoolName" class="form-control" placeholder="e.g., Nairobi School"></div>
+    <div class="form-group"><label>NEMIS Code *</label><input type="text" id="newSchoolNemis" class="form-control" placeholder="e.g., NSC001"></div>
+    <div class="form-row">
+      <div class="form-group"><label>County *</label><input type="text" id="newSchoolCounty" class="form-control" placeholder="e.g., Nairobi"></div>
+      <div class="form-group"><label>Category *</label><select id="newSchoolCategory" class="form-control"><option value="National">National School</option><option value="ExtraCounty">Extra-County</option><option value="County">County School</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Level *</label><select id="newSchoolLevel" class="form-control"><option value="Primary">Primary</option><option value="JSS">Junior Secondary (JSS)</option><option value="Senior">Senior Secondary</option></select></div>
+      <div class="form-group"><label>Gender *</label><select id="newSchoolGender" class="form-control"><option value="Boys">Boys Only</option><option value="Girls">Girls Only</option><option value="Mixed">Mixed</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Boarding Status *</label><select id="newSchoolBoarding" class="form-control"><option value="Boarding">Boarding Only</option><option value="Day">Day Only</option><option value="Both">Both Boarding and Day</option></select></div>
+      <div class="form-group"><label>Principal Name</label><input type="text" id="newSchoolPrincipal" class="form-control" placeholder="Head Teacher"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Total Capacity</label><input type="number" id="newSchoolSlots" class="form-control" placeholder="e.g., 400"></div>
+      <div class="form-group"><label>Cutoff Marks</label><input type="number" id="newSchoolCutoff" class="form-control" placeholder="e.g., 350"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Mean Score (2024)</label><input type="number" id="newSchoolMean" class="form-control" placeholder="e.g., 380"></div>
+      <div class="form-group"><label>Established Year</label><input type="text" id="newSchoolEst" class="form-control" placeholder="e.g., 1965"></div>
+    </div>
+    <div class="modal-footer">
+      <button onclick="closeAddSchoolModal()" style="padding: 10px 20px; background: #9ca3af; border: none; border-radius: 8px; cursor: pointer;">Cancel</button>
+      <button onclick="addSchool()" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer;"><i class="fa-solid fa-save"></i> Save School</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/school-data.js"></script>
+<script>
+// Sample data
+let transactions = [
+  { receipt: "LBX81029K4", school: "Nairobi School", amount: 1050, date: "2027-01-15" },
+  { receipt: "MPESA7G2H9J", school: "Alliance High", amount: 1050, date: "2027-01-16" },
+  { receipt: "TXN9K3L8M1", school: "Kenya High", amount: 1050, date: "2027-01-17" }
+];
+
+let systemLogs = [
+  { timestamp: "2027-01-16 08:30:00", user: "root", action: "System login", ip: "127.0.0.1" },
+  { timestamp: "2027-01-16 09:00:00", user: "admin", action: "Added school", ip: "192.168.1.100" },
+  { timestamp: "2027-01-17 10:15:00", user: "root", action: "Approved school", ip: "127.0.0.1" }
+];
+
+// Load transactions from localStorage
+function loadTransactions() {
+  const stored = localStorage.getItem('govschools_transactions');
+  if (stored) {
+    transactions = JSON.parse(stored);
+  } else {
+    localStorage.setItem('govschools_transactions', JSON.stringify(transactions));
+  }
+  updateLedger();
+}
+
+function updateLedger() {
+  const total = transactions.reduce((sum, t) => sum + t.amount, 0);
+  const schoolTotal = transactions.length * 1000;
+  const platformTotal = transactions.length * 50;
+  
+  document.getElementById('totalVolume').innerHTML = `KES ${total.toLocaleString()}`;
+  document.getElementById('schoolAllocation').innerHTML = `KES ${schoolTotal.toLocaleString()}`;
+  document.getElementById('platformRevenue').innerHTML = `KES ${platformTotal.toLocaleString()}`;
+  
+  const tbody = document.getElementById('ledgerBody');
+  tbody.innerHTML = transactions.slice(0, 20).map(t => `
+    <tr><td><code>${t.receipt}</code></td><td>${t.school}</td><td>KES ${t.amount}</td><td>${t.date}</td></tr>
+  `).join('');
+}
+
+function updateLogs() {
+  const tbody = document.getElementById('logsBody');
+  tbody.innerHTML = systemLogs.slice(0, 50).map(l => `
+    <tr><td>${l.timestamp}</td><td>${l.user}</td><td>${l.action}</td><td>${l.ip}</td></tr>
+  `).join('');
+}
+
+function clearAllLogs() {
+  if (confirm('⚠️ Are you sure you want to clear all system logs? This action cannot be undone.')) {
+    systemLogs = [];
+    localStorage.setItem('govschools_logs', JSON.stringify(systemLogs));
+    updateLogs();
+    addLog('root', 'Cleared all system logs', '127.0.0.1');
+  }
+}
+
+function addLog(user, action, ip) {
+  systemLogs.unshift({
+    timestamp: new Date().toLocaleString(),
+    user: user,
+    action: action,
+    ip: ip
+  });
+  localStorage.setItem('govschools_logs', JSON.stringify(systemLogs.slice(0, 200)));
+  updateLogs();
+}
+
+// School Management using centralized data
+let allSchools = [];
+
+function loadSchools() {
+  allSchools = window.SCHOOL_DATA.getAllSchools();
+  renderSchools();
+  renderVerificationQueue();
+  updateStats();
+  document.getElementById('schoolsLoaded').innerText = allSchools.length;
+}
+
+function renderSchools() {
+  const tbody = document.getElementById('schoolsBody');
+  if (!tbody) return;
+  
+  tbody.innerHTML = allSchools.map(s => `
+    <tr>
+      <td><strong>${escapeHtml(s.name)}</strong></td>
+      <td><code>${s.nemis}</code></td>
+      <td>${s.county}</td>
+      <td>${s.category || 'N/A'}</td>
+      <td><span class="status-badge status-${s.status}">${s.status}</span></td>
+      <td>
+        ${s.status === 'pending' ? `<button class="btn-approve" onclick="approveSchool(${s.id})"><i class="fa-solid fa-check"></i> Approve</button>` : ''}
+        <button class="btn-delete" onclick="deleteSchool(${s.id})"><i class="fa-solid fa-trash"></i> Delete</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderVerificationQueue() {
+  const queue = window.SCHOOL_DATA.getVerificationQueue();
+  const pending = queue.filter(q => q.status === 'pending');
+  document.getElementById('pendingCount').innerText = pending.length;
+  
+  const tbody = document.getElementById('verificationBody');
+  if (!tbody) return;
+  
+  tbody.innerHTML = pending.map(q => `
+    <tr>
+      <td><strong>${escapeHtml(q.schoolName)}</strong></td>
+      <td><code>${q.schoolCode}</code></td>
+      <td>${escapeHtml(q.headteacher) || 'Pending'}</td>
+      <td>${q.submissionDate}</td>
+      <td>
+        <button class="btn-approve" onclick="approveSchoolFromQueue(${q.id})"><i class="fa-solid fa-check"></i> Approve</button>
+        <button class="btn-delete" onclick="rejectSchool(${q.id})"><i class="fa-solid fa-times"></i> Reject</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function approveSchoolFromQueue(schoolId) {
+  if (confirm('Approve this school? It will become visible to all users immediately.')) {
+    const result = window.SCHOOL_DATA.approveSchool(schoolId);
+    if (result) {
+      loadSchools();
+      addLog('root', `Approved school ID: ${schoolId}`, '127.0.0.1');
+      alert('School has been approved and is now visible across the platform!');
+    }
+  }
+}
+
+function rejectSchool(schoolId) {
+  if (confirm('Reject this school application? This action cannot be undone.')) {
+    window.SCHOOL_DATA.deleteSchool(schoolId);
+    loadSchools();
+    addLog('root', `Rejected school ID: ${schoolId}`, '127.0.0.1');
+    alert('School application has been rejected and removed.');
+  }
+}
+
+function approveSchool(id) {
+  if (confirm('Approve this school? It will become visible to all users.')) {
+    window.SCHOOL_DATA.approveSchool(id);
+    loadSchools();
+    addLog('root', `Approved school ID: ${id}`, '127.0.0.1');
+    alert('School approved and now visible to all users!');
+  }
+}
+
+function deleteSchool(id) {
+  const school = allSchools.find(s => s.id === id);
+  if (confirm(`⚠️ Permanently delete "${school?.name}"? This action cannot be undone.`)) {
+    window.SCHOOL_DATA.deleteSchool(id);
+    loadSchools();
+    addLog('root', `Deleted school: ${school?.name} (ID: ${id})`, '127.0.0.1');
+    alert('School has been permanently deleted.');
+  }
+}
+
+function openAddSchoolModal() {
+  document.getElementById('addSchoolModal').classList.add('active');
+}
+
+function closeAddSchoolModal() {
+  document.getElementById('addSchoolModal').classList.remove('active');
+  // Clear form
+  document.getElementById('newSchoolName').value = '';
+  document.getElementById('newSchoolNemis').value = '';
+  document.getElementById('newSchoolCounty').value = '';
+  document.getElementById('newSchoolPrincipal').value = '';
+  document.getElementById('newSchoolSlots').value = '';
+  document.getElementById('newSchoolCutoff').value = '';
+  document.getElementById('newSchoolMean').value = '';
+  document.getElementById('newSchoolEst').value = '';
+}
+
+function addSchool() {
+  const name = document.getElementById('newSchoolName').value.trim();
+  const nemis = document.getElementById('newSchoolNemis').value.trim().toUpperCase();
+  const county = document.getElementById('newSchoolCounty').value.trim();
+  const category = document.getElementById('newSchoolCategory').value;
+  const level = document.getElementById('newSchoolLevel').value;
+  const gender = document.getElementById('newSchoolGender').value;
+  const boarding = document.getElementById('newSchoolBoarding').value;
+  const principal = document.getElementById('newSchoolPrincipal').value.trim();
+  const slots = parseInt(document.getElementById('newSchoolSlots').value) || 200;
+  const cutoff = parseInt(document.getElementById('newSchoolCutoff').value) || 350;
+  const mean2024 = parseInt(document.getElementById('newSchoolMean').value) || 350;
+  const established = document.getElementById('newSchoolEst').value || new Date().getFullYear();
+  
+  if (!name || !nemis || !county) {
+    alert('Please fill in all required fields (School Name, NEMIS Code, County)');
+    return;
+  }
+  
+  // Check for duplicate NEMIS code
+  if (allSchools.some(s => s.nemis === nemis)) {
+    alert('A school with this NEMIS code already exists!');
+    return;
+  }
+  
+  const newSchool = {
+    name: name,
+    nemis: nemis,
+    county: county,
+    category: category,
+    level: level,
+    gender: gender,
+    boarding: boarding,
+    principal: principal || 'Pending Assignment',
+    slots: slots,
+    remaining: slots,
+    cutoff: cutoff,
+    mean2024: mean2024,
+    established: established,
+    motto: 'Excellence in Education',
+    status: 'pending',
+    color: `linear-gradient(135deg,#1a4731,${window.SCHOOL_DATA.getRandomColor()})`
+  };
+  
+  window.SCHOOL_DATA.addSchool(newSchool);
+  closeAddSchoolModal();
+  loadSchools();
+  addLog('root', `Added new school: ${name} (${nemis})`, '127.0.0.1');
+  alert(`School "${name}" has been added and is pending Ministry approval.`);
+}
+
+function updateStats() {
+  const stats = window.SCHOOL_DATA.getStats();
+  const statsContainer = document.querySelector('#verificationTab .stats-strip');
+  if (statsContainer) {
+    statsContainer.innerHTML = `
+      <div class="stat-node"><div class="meta">Total Schools</div><div class="qty">${stats.total}</div></div>
+      <div class="stat-node"><div class="meta">Active Schools</div><div class="qty">${stats.active}</div></div>
+      <div class="stat-node"><div class="meta">Pending Approval</div><div class="qty">${stats.pending}</div></div>
+      <div class="stat-node"><div class="meta">National Schools</div><div class="qty">${stats.national}</div></div>
+    `;
+  }
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+}
+
+// Tab switching
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+  document.getElementById(`${tabId}Tab`).classList.add('active');
+  
+  document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+  
+  // Refresh data when switching to certain tabs
+  if (tabId === 'schools' || tabId === 'verification') {
+    loadSchools();
+  }
+}
+
+function logout() {
+  if (confirm('Are you sure you want to logout?')) {
+    localStorage.removeItem('govschools_session');
+    window.location.href = 'access-gateway.html';
+  }
+}
+
+// Listen for school updates from other tabs/pages
+window.addEventListener('schoolsUpdated', () => {
+  loadSchools();
+});
+
+// DEMO MODE: Auto-login for testing
+function initDemoMode() {
+  const existingSession = localStorage.getItem('govschools_session');
+  if (!existingSession) {
+    const demoSession = {
+      name: 'System Administrator',
+      username: 'root',
+      role: 'admin',
+      phone: '0712345678',
+      isDemo: true
+    };
+    localStorage.setItem('govschools_session', JSON.stringify(demoSession));
+    console.log('Demo mode activated - Admin session created');
+  }
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  initDemoMode();
+  loadTransactions();
+  loadSchools();
+  updateLogs();
+  
+  document.querySelectorAll('[data-tab]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchTab(link.getAttribute('data-tab'));
+    });
+  });
+  
+  // Update system health stats
+  setInterval(() => {
+    const stats = window.SCHOOL_DATA.getStats();
+    document.getElementById('schoolsLoaded').innerText = stats.total;
+  }, 5000);
+});
+</script>
+</body>
+</html>

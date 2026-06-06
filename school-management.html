@@ -1,0 +1,435 @@
+<!-- school-management.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Management - GovSchools Kenya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Add your existing styles here or link to your main CSS */
+    :root {
+      --primary: #006B3F;
+      --primary-light: #129a5f;
+      --secondary: #990000;
+      --dark-bg: #0b0f19;
+      --light-bg: #f8fafc;
+      --light-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: var(--font-sans);
+      background: var(--light-bg);
+      color: var(--text-main);
+      padding: 40px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+    }
+    
+    .table-container {
+      background: white;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th, td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    th {
+      background: rgba(0,0,0,0.02);
+      font-weight: 700;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .status-active { background: #d1fae5; color: #059669; }
+    .status-inactive { background: #fee2e2; color: #dc2626; }
+    .status-pending { background: #fef3c7; color: #d97706; }
+    
+    @media (max-width: 768px) {
+      body { padding: 20px; }
+      th, td { padding: 12px 8px; font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1><i class="fa-solid fa-school"></i> School Management System</h1>
+    <button class="btn-primary" onclick="openAddSchoolModal()">
+      <i class="fa-solid fa-plus"></i> Add New School
+    </button>
+  </div>
+  
+  <div class="stats-grid" id="statsGrid"></div>
+  
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>School Name</th>
+          <th>NEMIS Code</th>
+          <th>County</th>
+          <th>Category</th>
+          <th>Level</th>
+          <th>Principal</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="schoolsTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Add School Modal -->
+<div class="modal" id="addSchoolModal">
+  <div class="modal-content">
+    <h2 style="margin-bottom: 24px;"><i class="fa-solid fa-plus"></i> Register New School</h2>
+    <form id="schoolForm">
+      <div class="form-group">
+        <label>School Name *</label>
+        <input type="text" class="form-control" id="schoolName" required>
+      </div>
+      <div class="form-group">
+        <label>NEMIS Code *</label>
+        <input type="text" class="form-control" id="nemisCode" required placeholder="e.g., NSC001">
+      </div>
+      <div class="form-group">
+        <label>County *</label>
+        <select class="form-control" id="county" required>
+          <option value="">Select County</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Category *</label>
+        <select class="form-control" id="category" required>
+          <option value="National">National School</option>
+          <option value="ExtraCounty">Extra-County School</option>
+          <option value="County">County School</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Level *</label>
+        <select class="form-control" id="level" required>
+          <option value="Primary">Primary School</option>
+          <option value="JSS">Junior Secondary (JSS)</option>
+          <option value="Senior">Senior Secondary</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Gender *</label>
+        <select class="form-control" id="gender" required>
+          <option value="Boys">Boys Only</option>
+          <option value="Girls">Girls Only</option>
+          <option value="Mixed">Mixed</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Boarding Status *</label>
+        <select class="form-control" id="boarding" required>
+          <option value="Boarding">Boarding Only</option>
+          <option value="Day">Day Only</option>
+          <option value="Both">Both Boarding and Day</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Principal Name</label>
+        <input type="text" class="form-control" id="principal" placeholder="Full name of head teacher">
+      </div>
+      <div class="form-group">
+        <label>Total Capacity</label>
+        <input type="number" class="form-control" id="capacity" placeholder="Number of students">
+      </div>
+      <div class="form-group">
+        <label>Contact Email</label>
+        <input type="email" class="form-control" id="email" placeholder="school@example.com">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" class="form-control" id="phone" placeholder="e.g., 020-XXXXXX">
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+        <button type="button" class="btn-secondary" onclick="closeAddSchoolModal()" style="background: #e2e8f0; border: none; padding: 10px 20px; border-radius: 8px;">Cancel</button>
+        <button type="submit" class="btn-primary" style="background: var(--primary);">Save School</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// Kenya Counties
+const KENYA_COUNTIES = [
+  "Nairobi", "Kiambu", "Mombasa", "Kisumu", "Nakuru", "Machakos", "Murang'a", "Nyeri",
+  "Kirinyaga", "Nyandarua", "Laikipia", "Meru", "Tharaka-Nithi", "Embu", "Kitui", "Makueni",
+  "Kajiado", "Narok", "Bomet", "Kericho", "Uasin Gishu", "Nandi", "Trans Nzoia", "West Pokot",
+  "Elgeyo-Marakwet", "Baringo", "Samburu", "Turkana", "Marsabit", "Isiolo", "Garissa", "Wajir",
+  "Mandera", "Kwale", "Kilifi", "Tana River", "Lamu", "Taita-Taveta", "Siaya", "Kisii", 
+  "Nyamira", "Migori", "Homa Bay", "Busia", "Bungoma", "Kakamega", "Vihiga"
+];
+
+// Initialize schools from localStorage or default
+let schools = [];
+
+function loadSchools() {
+  const stored = localStorage.getItem('govschools_schools');
+  if (stored) {
+    schools = JSON.parse(stored);
+  } else {
+    // Default schools
+    schools = [
+      { id: 1, name: "Nairobi School", nemis: "NSC001", county: "Nairobi", category: "National", level: "Senior", gender: "Boys", boarding: "Boarding", principal: "Dr. Ezekiel Kemboi", capacity: 240, email: "info@nairobischool.ac.ke", phone: "020-2212345", status: "active", createdAt: "2024-01-15" },
+      { id: 2, name: "Alliance High School", nemis: "AHS001", county: "Kiambu", category: "National", level: "Senior", gender: "Boys", boarding: "Boarding", principal: "Mr. William Kipchumba", capacity: 240, email: "info@alliancehigh.ac.ke", phone: "020-2234567", status: "active", createdAt: "2024-01-15" },
+      { id: 3, name: "Kenya High School", nemis: "KHS001", county: "Nairobi", category: "National", level: "Senior", gender: "Girls", boarding: "Boarding", principal: "Mrs. Elizabeth Akinyi", capacity: 200, email: "info@kenyahigh.ac.ke", phone: "020-2345678", status: "active", createdAt: "2024-01-15" }
+    ];
+    localStorage.setItem('govschools_schools', JSON.stringify(schools));
+  }
+  renderSchools();
+  updateStats();
+}
+
+function renderSchools() {
+  const tbody = document.getElementById('schoolsTableBody');
+  tbody.innerHTML = schools.map(school => `
+    <tr>
+      <td><strong>${school.name}</strong></td>
+      <td><code>${school.nemis}</code></td>
+      <td>${school.county}</td>
+      <td>${school.category}</td>
+      <td>${school.level}</td>
+      <td>${school.principal || '—'}</td>
+      <td><span class="status-badge status-${school.status === 'active' ? 'active' : 'inactive'}">${school.status === 'active' ? 'Active' : 'Inactive'}</span></td>
+      <td>
+        <button onclick="toggleSchoolStatus(${school.id})" style="background: none; border: none; cursor: pointer; color: ${school.status === 'active' ? '#dc2626' : '#059669'}; margin-right: 8px;" title="${school.status === 'active' ? 'Deactivate' : 'Activate'}">
+          <i class="fa-solid fa-${school.status === 'active' ? 'ban' : 'check-circle'}"></i>
+        </button>
+        <button onclick="editSchool(${school.id})" style="background: none; border: none; cursor: pointer; color: var(--primary);" title="Edit">
+          <i class="fa-solid fa-edit"></i>
+        </button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function updateStats() {
+  const total = schools.length;
+  const active = schools.filter(s => s.status === 'active').length;
+  const national = schools.filter(s => s.category === 'National').length;
+  const counties = new Set(schools.map(s => s.county)).size;
+  
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-value" style="font-size: 2rem; font-weight: 800; color: var(--primary);">${total}</div><div>Total Schools</div></div>
+    <div class="stat-card"><div class="stat-value" style="font-size: 2rem; font-weight: 800; color: #10b981;">${active}</div><div>Active Schools</div></div>
+    <div class="stat-card"><div class="stat-value" style="font-size: 2rem; font-weight: 800; color: #3b82f6;">${national}</div><div>National Schools</div></div>
+    <div class="stat-card"><div class="stat-value" style="font-size: 2rem; font-weight: 800; color: #f59e0b;">${counties}</div><div>Counties Covered</div></div>
+  `;
+}
+
+function openAddSchoolModal() {
+  document.getElementById('addSchoolModal').classList.add('active');
+  // Populate county dropdown
+  const countySelect = document.getElementById('county');
+  countySelect.innerHTML = '<option value="">Select County</option>' + 
+    KENYA_COUNTIES.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
+function closeAddSchoolModal() {
+  document.getElementById('addSchoolModal').classList.remove('active');
+  document.getElementById('schoolForm').reset();
+}
+
+// Add school via form submission
+document.getElementById('schoolForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const newSchool = {
+    id: Date.now(),
+    name: document.getElementById('schoolName').value,
+    nemis: document.getElementById('nemisCode').value.toUpperCase(),
+    county: document.getElementById('county').value,
+    category: document.getElementById('category').value,
+    level: document.getElementById('level').value,
+    gender: document.getElementById('gender').value,
+    boarding: document.getElementById('boarding').value,
+    principal: document.getElementById('principal').value,
+    capacity: parseInt(document.getElementById('capacity').value) || 0,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    status: 'pending',
+    createdAt: new Date().toISOString().split('T')[0],
+    // Additional fields for admission
+    cutoff_kcpe: 350, // Default cutoff
+    mean2024: 350,
+    slots: parseInt(document.getElementById('capacity').value) || 200,
+    remaining: parseInt(document.getElementById('capacity').value) || 200
+  };
+  
+  // Validate required fields
+  if (!newSchool.name || !newSchool.nemis || !newSchool.county) {
+    alert('Please fill in all required fields (Name, NEMIS Code, County)');
+    return;
+  }
+  
+  // Check for duplicate NEMIS code
+  if (schools.some(s => s.nemis === newSchool.nemis)) {
+    alert('A school with this NEMIS code already exists!');
+    return;
+  }
+  
+  schools.push(newSchool);
+  localStorage.setItem('govschools_schools', JSON.stringify(schools));
+  
+  // Also add to verification queue for ministry approval
+  const verificationQueue = JSON.parse(localStorage.getItem('govschools_verification_queue') || '[]');
+  verificationQueue.push({
+    id: newSchool.id,
+    schoolName: newSchool.name,
+    schoolCode: newSchool.nemis,
+    headteacher: newSchool.principal || 'Pending',
+    tscId: `TSC-${Math.floor(Math.random() * 10000000)}`,
+    submissionDate: new Date().toISOString().split('T')[0],
+    status: 'pending'
+  });
+  localStorage.setItem('govschools_verification_queue', JSON.stringify(verificationQueue));
+  
+  closeAddSchoolModal();
+  renderSchools();
+  updateStats();
+  alert(`School "${newSchool.name}" has been added and is pending verification by the Ministry of Education.`);
+});
+
+function toggleSchoolStatus(id) {
+  const school = schools.find(s => s.id === id);
+  if (school) {
+    school.status = school.status === 'active' ? 'inactive' : 'active';
+    localStorage.setItem('govschools_schools', JSON.stringify(schools));
+    renderSchools();
+    updateStats();
+  }
+}
+
+function editSchool(id) {
+  // Implementation for editing school
+  alert('Edit functionality will open a modal with pre-filled school details for editing.');
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  loadSchools();
+  
+  // Check for admin session
+  const session = JSON.parse(localStorage.getItem('govschools_session') || 'null');
+  if (!session || (session.role !== 'admin' && session.role !== 'moe')) {
+    alert('Access denied. Only administrators can manage schools.');
+    window.location.href = 'access-gateway.html';
+  }
+});
+</script>
+</body>
+</html>
