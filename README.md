@@ -40,7 +40,7 @@ govschools-kenya/
 └── apply.html        # Application form
 ```
 
-## ⚙️ Quick Start
+## Quick Start
 
 1.  **Clone the Repo**:
     ```bash
@@ -51,13 +51,13 @@ govschools-kenya/
     *   **Phone**: `0712345678`
     *   **Password**: `demo1234` (or just register a new account—it's all stored in your browser!)
 
-## 💾 Persistence (The "Mock" DB)
+## Persistence (The "Mock" DB)
 
 Since this is a frontend prototype, I'm using `localStorage` to keep your data alive. 
 - User sessions, school modifications, and submitted applications will survive a page refresh. 
 - You can clear your "database" at any time by clearing your browser's site data.
 
-## 🛡️ Disclaimer
+## Disclaimer
 
 This is a **portfolio project** and is not affiliated with the Kenyan Ministry of Education (MoE) or the ICT Authority. It is intended for demonstration purposes only to showcase UI/UX and frontend architectural patterns.
 
